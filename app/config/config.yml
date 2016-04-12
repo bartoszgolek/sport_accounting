@@ -38,6 +38,12 @@ twig:
     strict_variables: "%kernel.debug%"
 
 # Doctrine Configuration
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/DoctrineMigrations"
+    namespace: Application\Migrations
+    table_name: migration_versions
+    name: Application Migrations
+
 doctrine:
     dbal:
         driver:   pdo_mysql
