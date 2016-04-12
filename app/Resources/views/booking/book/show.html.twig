@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Booking\Book</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ booking_book.id }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ booking_book.description }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ booking_book.type }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('booking_book_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('booking_book_edit', { 'id': booking_book.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

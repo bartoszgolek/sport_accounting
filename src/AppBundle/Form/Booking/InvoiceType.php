@@ -3,13 +3,14 @@
 namespace AppBundle\Form\Booking;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BookType extends AbstractType
+class InvoiceType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -21,7 +22,7 @@ class BookType extends AbstractType
             ->add('invoice_number')
             ->add('invoice_date', DateType::class)
             ->add('number_of_reinforcements', IntegerType::class)
-            ->add('players', 'entity', array(
+            ->add('players', EntityType::class, array(
                 'class' => 'AppBundle\Entity\Booking\Book',
                 'query_builder' => function(EntityRepository $er) use($options) {
                     return $er->createQueryBuilder('b')
@@ -41,7 +42,7 @@ class BookType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Booking\Book'
+            'data_class' => 'AppBundle\Entity\Booking\Invoice'
         ));
     }
 }

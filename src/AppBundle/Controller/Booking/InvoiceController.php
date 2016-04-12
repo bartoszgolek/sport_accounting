@@ -8,6 +8,7 @@
 
     namespace AppBundle\Controller\Booking;
 
+    use AppBundle\Entity\Booking\Invoice;
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -23,25 +24,25 @@
         /**
          * Lists all Booking\Book entities.
          *
-         * @Route("/booking/invoice/create", name="booking_invoice_create")
-         * @Method("GET")
+         * @Route("/booking/invoice/new", name="booking_invoice_new")
+         * @Method({"GET", "POST"})
          */
-        public function createAction()
+        public function newAction(Request $request)
         {
             $invoice = new Invoice();
-            $form = $this->createForm('AppBundle\Form\Booking\BookType', $booking_book);
+            $form = $this->createForm('AppBundle\Form\Booking\InvoiceType', $invoice);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($booking_book);
-                $em->flush();
+                //$em->persist($invoice);
+                //$em->flush();
 
-                return $this->redirectToRoute('booking_book_show', array('id' => $booking_book->getId()));
+                //return $this->redirectToRoute('booking_book_show', array('id' => $invoice->getId()));
             }
 
-            return $this->render('booking/book/new.html.twig', array(
-                'booking_book' => $booking_book,
+            return $this->render('booking/invoice/new.html.twig', array(
+                'invoice' => $invoice,
                 'form' => $form->createView(),
             ));
         }

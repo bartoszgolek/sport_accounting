@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Booking\Book list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for booking_book in booking_books %}
+            <tr>
+                <td><a href="{{ path('booking_book_show', { 'id': booking_book.id }) }}">{{ booking_book.id }}</a></td>
+                <td>{{ booking_book.description }}</td>
+                <td>{{ booking_book.type }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('booking_book_show', { 'id': booking_book.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('booking_book_edit', { 'id': booking_book.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('booking_book_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,18 @@
+{
+  "name": "sport_accounting",
+  "homepage": "https://github.com/bartoszgolek/sport_accounting",
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}
