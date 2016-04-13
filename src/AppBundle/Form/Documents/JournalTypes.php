@@ -6,23 +6,17 @@
      * Time: 22:23
      */
 
-    namespace AppBundle\Form\Booking;
-
+    namespace AppBundle\Form\Documents;
 
     /**
      *
      * @license MIT
      * @author Bartosz Gołek <bartosz.golek@gmail.com>
      **/
-    class BookTypes
+    class JournalTypes
     {
-        const BANK = 0;
-        const PLAYER = 1;
-        const SCHOOL = 2;
-
-        const BANK_NAME = 'Bank';
-        const PLAYER_NAME = 'Player';
-        const SCHOOL_NAME = 'School';
+        const BASIC = 0;
+        const BASIC_NAME = 'Basic';
 
         static function getName($bookType)
         {
@@ -34,18 +28,14 @@
         static function getOptions()
         {
             return array(
-                self::BANK_NAME => self::BANK,
-                self::PLAYER_NAME => self::PLAYER,
-                self::SCHOOL_NAME => self::SCHOOL
+                self::BASIC_NAME => self::BASIC
             );
         }
 
         static function getArray()
         {
             return array(
-                self::BANK => self::BANK_NAME,
-                self::PLAYER => self::PLAYER_NAME,
-                self::SCHOOL => self::SCHOOL_NAME
+                self::BASIC => self::BASIC_NAME
             );
         }
     }

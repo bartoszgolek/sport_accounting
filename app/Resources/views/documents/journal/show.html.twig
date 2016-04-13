@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Journal</h1>
+
+    <a class="btn btn-default" href="{{ path('documents_journal_index') }}">Back to the list</a>
+    {% if documents_journal.commited == false %}
+        <a class="btn btn-default" href="{{ path('documents_journal_edit', { 'id': documents_journal.id }) }}">Edit</a>
+    {% endif %}
+
+    <table class="table table-striped table-hover">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ documents_journal.id }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ documents_journal.description }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ attribute(book_types, documents_journal.type) }}</td>
+            </tr>
+            <tr>
+                <th>Commited</th>
+                <td>{% if documents_journal.commited %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Committime</th>
+                <td>{{ documents_journal.commitTime }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {{ form_start(delete_form) }}
+        <input class="btn btn-default" type="submit" value="Delete">
+    {{ form_end(delete_form) }}
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Booking;
 
+use AppBundle\Form\Booking\BookTypes;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -30,6 +31,7 @@ class BookController extends Controller
 
         return $this->render('booking/book/index.html.twig', array(
             'booking_books' => $booking_books,
+            'book_types' => BookTypes::getArray()
         ));
     }
 
@@ -71,6 +73,7 @@ class BookController extends Controller
 
         return $this->render('booking/book/show.html.twig', array(
             'booking_book' => $booking_book,
+            'book_types' => BookTypes::getArray(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
