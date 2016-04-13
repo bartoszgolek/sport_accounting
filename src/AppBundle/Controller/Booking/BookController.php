@@ -42,7 +42,7 @@ class BookController extends Controller
     public function newAction(Request $request)
     {
         $booking_book = new Book();
-        $form = $this->createForm('AppBundle\Form\BookType', $booking_book);
+        $form = $this->createForm('AppBundle\Form\Booking\BookType', $booking_book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -84,7 +84,7 @@ class BookController extends Controller
     public function editAction(Request $request, Book $booking_book)
     {
         $deleteForm = $this->createDeleteForm($booking_book);
-        $editForm = $this->createForm('AppBundle\Form\BookType', $booking_book);
+        $editForm = $this->createForm('AppBundle\Form\Booking\BookType', $booking_book);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
