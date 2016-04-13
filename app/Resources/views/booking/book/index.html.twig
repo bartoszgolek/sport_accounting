@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Booking\Book list</h1>
+    <h1>Account list</h1>
 
-    <table>
+    <a class="btn btn-default" href="{{ path('booking_book_new') }}">Add account</a>
+
+    <table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th>Id</th>
@@ -19,23 +21,12 @@
                 <td>{{ booking_book.description }}</td>
                 <td>{{ booking_book.type }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('booking_book_show', { 'id': booking_book.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('booking_book_edit', { 'id': booking_book.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    <a class="btn btn-default" href="{{ path('booking_book_show', { 'id': booking_book.id }) }}">show</a>
+                    <a class="btn btn-default" href="{{ path('booking_book_edit', { 'id': booking_book.id }) }}">edit</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('booking_book_new') }}">Create a new entry</a>
-        </li>
-    </ul>
 {% endblock %}

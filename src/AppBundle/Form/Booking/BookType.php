@@ -17,7 +17,7 @@ class BookType extends AbstractType
     {
         $builder
             ->add('description')
-            ->add('type', ChoiceType::class, BookTypes::getOptions())
+            ->add('type', ChoiceType::class, array('choices'  => BookTypes::getOptions()))
         ;
     }
     

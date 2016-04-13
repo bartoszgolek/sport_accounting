@@ -3,7 +3,10 @@
 {% block body %}
     <h1>Booking\Book</h1>
 
-    <table>
+    <a class="btn btn-default" href="{{ path('booking_book_index') }}">Back to the list</a>
+    <a class="btn btn-default" href="{{ path('booking_book_edit', { 'id': booking_book.id }) }}">Edit</a>
+
+    <table class="table table-striped">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -20,17 +23,7 @@
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('booking_book_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('booking_book_edit', { 'id': booking_book.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    {{ form_start(delete_form) }}
+        <input class="btn btn-default" type="submit" value="Delete">
+    {{ form_end(delete_form) }}
 {% endblock %}
