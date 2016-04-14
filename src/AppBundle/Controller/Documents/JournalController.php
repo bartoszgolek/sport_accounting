@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Documents;
 
+use AppBundle\Form\Booking\BookTypes;
 use AppBundle\Form\Documents\JournalTypes;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,6 +32,7 @@ class JournalController extends Controller
 
         return $this->render('documents/journal/index.html.twig', array(
             'documents_journals' => $documents_journals,
+            'book_types' => BookTypes::getArray(),
             'journal_types' => JournalTypes::getArray()
         ));
     }
