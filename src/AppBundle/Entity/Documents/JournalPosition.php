@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Documents;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * JournalPosition
@@ -170,6 +171,19 @@ class JournalPosition
     public function getCredit()
     {
         return $this->credit;
+    }
+
+    /**
+     * Get credit
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        $debit_value = $this->debit !== null ? $this->debit : 0;
+        $credit_value = $this->credit !== null ? $this->credit : 0;
+
+        return $debit_value + (-1 * $credit_value);
     }
 
     /**

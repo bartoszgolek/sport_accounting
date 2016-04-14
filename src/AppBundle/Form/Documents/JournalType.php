@@ -6,6 +6,7 @@ use AppBundle\Form\Type\JournalTypesType;
 use AppBundle\Form\Type\RowsCollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,9 +23,9 @@ class JournalType extends AbstractType
             ->add('type', JournalTypesType::class)
             ->add('positions', RowsCollectionType::class, array(
                 'entry_type' => JournalPositionType::class,
-                'allow_add' => true,
-                'allow_delete' => true
             ))
+            ->add('commit', SubmitType::class)
+            ->add('save', SubmitType::class)
         ;
     }
     

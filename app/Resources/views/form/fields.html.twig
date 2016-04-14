@@ -14,11 +14,9 @@
                 {% for child in form %}
                 <tr>
                     <th>{{ loop.index }}</th>
-                    {{ form_start(child) }}
                     {% for field in child %}
                         <td>{{ form_widget(field) }}</td>
                     {% endfor %}
-                    {{ form_end(child) }}
                 </tr>
                 {% endfor %}
             </tbody>

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Documents;
 
+use AppBundle\Entity\Documents\JournalPosition;
 use AppBundle\Form\Booking\BookTypes;
 use AppBundle\Form\Documents\JournalTypes;
 use Symfony\Component\HttpFoundation\Request;
@@ -99,6 +100,27 @@ class JournalController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+
+            if ($editForm->get('commit')->isClicked())
+            {
+                $vouchers = [];
+                foreach ($documents_journal->getPositions() as $position)
+                {
+                    /** @var JournalPosition $position */
+                    $voucher            = $position->getVoucher();
+
+                    if (!key_exists($voucher, $vouchers))
+                        $vouchers[$voucher] = $position->getValue();
+                    else
+                        $vouchers[$voucher] = $vouchers[$voucher] + $position->getValue();
+                }
+                foreach ($vouchers as $voucher)
+                    if ($voucher != 0) {
+                        $this->addFlash('error', 'All vouchers have to be balanced to zero.');
+                        return $this->redirectToRoute('documents_journal_edit', array('id' => $documents_journal->getId()));
+                    }
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($documents_journal);
             $em->flush();
@@ -106,11 +128,7 @@ class JournalController extends Controller
             return $this->redirectToRoute('documents_journal_edit', array('id' => $documents_journal->getId()));
         }
 
-        return $this->render('documents/journal/edit.html.twig', array(
-            'documents_journal' => $documents_journal,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->renderEditForm($documents_journal, $editForm, $deleteForm);
     }
 
     /**
@@ -147,5 +165,21 @@ class JournalController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * @param Journal $documents_journal
+     * @param $editForm
+     * @param $deleteForm
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function renderEditForm(Journal $documents_journal, $editForm, $deleteForm)
+    {
+        return $this->render('documents/journal/edit.html.twig', array(
+            'documents_journal' => $documents_journal,
+            'edit_form'         => $editForm->createView(),
+            'delete_form'       => $deleteForm->createView(),
+        ));
     }
 }
