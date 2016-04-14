@@ -4,7 +4,7 @@
     <h1>Journal</h1>
 
     <a class="btn btn-default" href="{{ path('documents_journal_index') }}">Back to the list</a>
-    {% if documents_journal.commited == false %}
+    {% if documents_journal.committed == false %}
         <a class="btn btn-default" href="{{ path('documents_journal_edit', { 'id': documents_journal.id }) }}">Edit</a>
     {% endif %}
 
@@ -24,7 +24,7 @@
             </tr>
             <tr>
                 <th>Commited</th>
-                <td>{% if documents_journal.commited %}Yes{% else %}No{% endif %}</td>
+                <td>{% if documents_journal.committed %}Yes{% else %}No{% endif %}</td>
             </tr>
             <tr>
                 <th>Committime</th>

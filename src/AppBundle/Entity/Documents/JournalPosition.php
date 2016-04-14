@@ -24,9 +24,10 @@ class JournalPosition
     /**
      * @var int
      *
-     * @ORM\Column(name="journal_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="Journal", inversedBy="positions")
+     * @ORM\JoinColumn(name="journal_id", referencedColumnName="id")
      */
-    private $journalId;
+    private $journal;
 
     /**
      * @var string
@@ -50,6 +51,14 @@ class JournalPosition
     private $credit;
 
     /**
+     * @var int
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Booking\Book")
+     * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
+     */
+    private $book;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="voucher", type="string", length=255)
@@ -68,27 +77,27 @@ class JournalPosition
     }
 
     /**
-     * Set journalId
+     * Set journal
      *
-     * @param integer $journalId
+     * @param Journal $journal
      *
      * @return JournalPosition
      */
-    public function setJournalId($journalId)
+    public function setJournal(Journal $journal)
     {
-        $this->journalId = $journalId;
+        $this->journal = $journal;
 
         return $this;
     }
 
     /**
-     * Get journalId
+     * Get journal
      *
-     * @return int
+     * @return Journal
      */
-    public function getJournalId()
+    public function getJournal()
     {
-        return $this->journalId;
+        return $this->journal;
     }
 
     /**
@@ -185,5 +194,29 @@ class JournalPosition
     public function getVoucher()
     {
         return $this->voucher;
+    }
+
+    /**
+     * Set book
+     *
+     * @param \AppBundle\Entity\Booking\Book $book
+     *
+     * @return Transaction
+     */
+    public function setBook(\AppBundle\Entity\Booking\Book $book = null)
+    {
+        $this->book = $book;
+
+        return $this;
+    }
+
+    /**
+     * Get book
+     *
+     * @return \AppBundle\Entity\Booking\Book
+     */
+    public function getBook()
+    {
+        return $this->book;
     }
 }

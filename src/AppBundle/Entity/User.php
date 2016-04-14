@@ -26,7 +26,7 @@
         /**
          * @var int
          *
-         * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Booking\Book", inversedBy="book")
+         * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Booking\Book")
          * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
          */
         private $book;

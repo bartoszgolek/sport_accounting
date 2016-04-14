@@ -87,7 +87,7 @@ class JournalController extends Controller
      */
     public function editAction(Request $request, Journal $documents_journal)
     {
-        if ($documents_journal->getCommited() == true) {
+        if ($documents_journal->getCommitted() == true) {
             $this->addFlash('error', 'Cannot edit committed journal!');
             return $this->redirectToRoute('documents_journal_index');
         }

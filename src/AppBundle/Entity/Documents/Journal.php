@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Documents;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Journal
 {
+    public function __construct()
+    {
+        $this->positions = new ArrayCollection();
+    }
+
     /**
      * @var int
      *
@@ -38,14 +44,14 @@ class Journal
     /**
      * @var bool
      *
-     * @ORM\Column(name="commited", type="boolean")
+     * @ORM\Column(name="committed", type="boolean")
      */
-    private $commited;
+    private $committed = false;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="commit_time", type="datetimetz")
+     * @ORM\Column(name="commit_time", type="datetimetz", nullable=true)
      */
     private $commitTime;
 
@@ -109,27 +115,27 @@ class Journal
     }
 
     /**
-     * Set commited
+     * Set committed
      *
-     * @param boolean $commited
+     * @param boolean $committed
      *
      * @return Journal
      */
-    public function setCommited($commited)
+    public function setCommitted($committed)
     {
-        $this->commited = $commited;
+        $this->committed = $committed;
 
         return $this;
     }
 
     /**
-     * Get commited
+     * Get committed
      *
      * @return bool
      */
-    public function getCommited()
+    public function getCommitted()
     {
-        return $this->commited;
+        return $this->committed;
     }
 
     /**
@@ -154,5 +160,45 @@ class Journal
     public function getCommitTime()
     {
         return $this->commitTime;
+    }
+
+    /**
+     * @ORM\OneToMany(targetEntity="JournalPosition", mappedBy="journal", cascade={"persist", "remove"})
+     */
+    private $positions;
+
+    /**
+     * Add position
+     *
+     * @param JournalPosition $position
+     *
+     * @return Journal
+     */
+    public function addPosition(JournalPosition $position)
+    {
+        $position->setJournal($this);
+        $this->positions[] = $position;
+
+        return $this;
+    }
+
+    /**
+     * Remove transaction
+     *
+     * @param JournalPosition $position
+     */
+    public function removeTransaction(JournalPosition $position)
+    {
+        $this->positions->removeElement($position);
+    }
+
+    /**
+     * Get positions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPositions()
+    {
+        return $this->positions;
     }
 }
