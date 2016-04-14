@@ -2,8 +2,9 @@
 
 namespace AppBundle\Form\Documents;
 
+use AppBundle\Form\Type\JournalTypesType;
+use AppBundle\Form\Type\RowsCollectionType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,8 +19,8 @@ class JournalType extends AbstractType
     {
         $builder
             ->add('description')
-            ->add('type', ChoiceType::class, array('choices'  => JournalTypes::getOptions()))
-            ->add('positions', CollectionType::class, array(
+            ->add('type', JournalTypesType::class)
+            ->add('positions', RowsCollectionType::class, array(
                 'entry_type' => JournalPositionType::class,
                 'allow_add' => true,
                 'allow_delete' => true

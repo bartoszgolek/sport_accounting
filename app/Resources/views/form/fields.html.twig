@@ -1,0 +1,28 @@
+{% block rows_collection_widget %}
+    {% spaceless %}
+        {% if form|length > 1 %}
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Lp.</th>
+                    {% for field in form.0 %}
+                        <th>{{ form_label(field) }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for child in form %}
+                <tr>
+                    <th>{{ loop.index }}</th>
+                    {{ form_start(child) }}
+                    {% for field in child %}
+                        <td>{{ form_widget(field) }}</td>
+                    {% endfor %}
+                    {{ form_end(child) }}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {%  endif %}
+    {% endspaceless %}
+{% endblock %}

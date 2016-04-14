@@ -201,7 +201,7 @@ class JournalPosition
      *
      * @param \AppBundle\Entity\Booking\Book $book
      *
-     * @return Transaction
+     * @return JournalPosition
      */
     public function setBook(\AppBundle\Entity\Booking\Book $book = null)
     {

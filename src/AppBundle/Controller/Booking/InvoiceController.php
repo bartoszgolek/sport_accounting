@@ -47,11 +47,11 @@
                 $journal->setDescription("Posting invoice " . $invoice->getInvoiceNumber());
                 $journal->setType(JournalTypes::BASIC);
 
-                $this->createJournalPosition($journal, "Invoice number ".$invoice->getInvoiceNumber(), $voucher, $invoice->getSchool(), $invoice->getAmount(), null);
-                $this->createJournalPosition($journal, "Reinforcements", $voucher, $invoice->getReinforcementsBook(), null, $reinforcements_amount);
+                $this->createJournalPosition($journal, $voucher, "Invoice number ".$invoice->getInvoiceNumber(), $invoice->getSchool(), $invoice->getAmount(), null);
+                $this->createJournalPosition($journal, $voucher, "Reinforcements", $invoice->getReinforcementsBook(), null, $reinforcements_amount);
 
                 foreach ($invoice->getPlayers() as $player)
-                    $this->createJournalPosition($journal, "Participation", $voucher, $player, null, $per_player_amount);
+                    $this->createJournalPosition($journal, $voucher, "Participation", $player, null, $per_player_amount);
 
                 $em->persist($journal);
                 $em->flush();

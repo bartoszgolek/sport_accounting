@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Booking;
 
+use AppBundle\Form\Type\BookTypesType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,7 +18,7 @@ class BookType extends AbstractType
     {
         $builder
             ->add('description')
-            ->add('type', ChoiceType::class, array('choices'  => BookTypes::getOptions()))
+            ->add('type', BookTypesType::class)
         ;
     }
     

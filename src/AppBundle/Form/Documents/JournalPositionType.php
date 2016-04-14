@@ -34,10 +34,12 @@ class JournalPositionType extends AbstractType
             ))
             ->add('description')
             ->add('debit', NumberType::class, array(
-                'scale' => 2
+                'scale' => 2,
+                'required' => false,
             ))
             ->add('credit', NumberType::class, array(
-                'scale' => 2
+                'scale' => 2,
+                'required' => false,
             ))
         ;
     }

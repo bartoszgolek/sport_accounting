@@ -16,7 +16,8 @@ class Invoice
 {
     public function __construct()
     {
-        $this->players = new ArrayCollection();
+        $this->players      = new ArrayCollection();
+        $this->invoice_date;
     }
 
     /**
