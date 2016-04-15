@@ -24,7 +24,7 @@
         public function configureOptions(OptionsResolver $resolver)
         {
             $resolver->setDefaults(array(
-                'choices' => BookTypes::getOptions()
+                'choices' => array_flip(BookTypes::getArray())
             ));
         }
 

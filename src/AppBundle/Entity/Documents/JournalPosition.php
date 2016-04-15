@@ -10,6 +10,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  *
  * @ORM\Table(name="documents_journal_position")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Documents\JournalPositionRepository")
+ * @AppBundle\Validator\Constraints\ContainsDebitOrCredit
  */
 class JournalPosition
 {

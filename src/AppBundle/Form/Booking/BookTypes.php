@@ -31,15 +31,6 @@
             return $bookTypes[$bookType];
         }
 
-        static function getOptions()
-        {
-            return array(
-                self::BANK_NAME => self::BANK,
-                self::PLAYER_NAME => self::PLAYER,
-                self::SCHOOL_NAME => self::SCHOOL
-            );
-        }
-
         static function getArray()
         {
             return array(

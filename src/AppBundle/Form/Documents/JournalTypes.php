@@ -25,13 +25,6 @@
             return $bookTypes[$bookType];
         }
 
-        static function getOptions()
-        {
-            return array(
-                self::BASIC_NAME => self::BASIC
-            );
-        }
-
         static function getArray()
         {
             return array(

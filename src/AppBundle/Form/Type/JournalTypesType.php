@@ -24,7 +24,7 @@
         public function configureOptions(OptionsResolver $resolver)
         {
             $resolver->setDefaults(array(
-                'choices' => JournalTypes::getOptions()
+                'choices' => array_flip(JournalTypes::getArray())
             ));
         }
 
