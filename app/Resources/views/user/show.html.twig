@@ -12,6 +12,18 @@
                 <th>Id</th>
                 <td>{{ user.id }}</td>
             </tr>
+            <tr>
+                <th>Username</th>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Book</th>
+                <td>{% if not user.book is null %}{{ user.book.description }}{% endif %}</td>
+            </tr>
         </tbody>
     </table>
 

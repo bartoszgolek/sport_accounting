@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Choose file</h1>
+
+    <a class="btn btn-default" href="{{ path('documents_journal_index') }}">Cancel</a>
+
+    {{ form_start(choose_form) }}
+    {{ form_widget(choose_form) }}
+    {{ form_end(choose_form) }}
+{% endblock %}

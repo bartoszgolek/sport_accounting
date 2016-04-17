@@ -2,6 +2,9 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Form\Booking\BookTypes;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,10 +19,20 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('book')
-            ->add('book')
-            ->add('book')
-            ->add('book')
+            ->add('email')
+            ->add('book', EntityType::class, array(
+                'class' => 'AppBundle\Entity\Booking\Book',
+                'query_builder' => function(EntityRepository $er) use($options) {
+                    return $er->createQueryBuilder('b')
+                        ->where('b.type = :bookType')
+                        ->setParameter('bookType', BookTypes::PLAYER)
+                        ->orderBy('b.description', 'ASC');
+                },
+                'choice_label' => 'description',
+                'expanded' => false,
+                'multiple' => false,
+                'placeholder' => ""
+            ))
         ;
     }
     

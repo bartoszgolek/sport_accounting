@@ -29,13 +29,14 @@
                         <li><a href="{{ path('booking_book_index') }}">Accounts</a></li>
                         <li><a href="{{ path('documents_journal_index') }}">Journals</a></li>
                         <li><a href="{{ path('user_index') }}">Users</a></li>
-                        <li><a href="#">My account</a></li>
-                        <li class="dropdown">
+                        <li><a href="{{ path('booking_my_book_show') }}">My account</a></li>
+                        <!--<li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Generators <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ path('booking_invoice_new') }}">Register Invoice</a></li>
-                            </ul>
-                        </li>
+                            <ul class="dropdown-menu">-->
+                                <li><a href="{{ path('booking_invoice_new') }}">Generate Invoice Journal</a></li>
+                                <li><a href="{{ path('import_bank') }}">Import bank transactions</a></li>
+                        <!--    </ul>
+                        </li>-->
                         {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -59,6 +60,38 @@
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
+
+        {% for type, messages in app.session.flashbag.all() %}
+            {% if type == 'success' %}
+                {% for message in messages %}
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if type == 'info' %}
+                {% for message in messages %}
+                    <div class="alert alert-info">
+                        <strong>Info!</strong> {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if type == 'warning' %}
+                {% for message in messages %}
+                    <div class="alert alert-warning">
+                        <strong>Warning!</strong> {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if type == 'error' %}
+                {% for message in messages %}
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
 

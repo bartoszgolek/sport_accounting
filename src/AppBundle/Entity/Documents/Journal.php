@@ -4,12 +4,15 @@ namespace AppBundle\Entity\Documents;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * Journal
  *
  * @ORM\Table(name="documents_journal")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Documents\JournalRepository")
+ * @AppAssert\Journal\VouchersSumIsZero
+ * @AppAssert\Journal\DebitOrCredit
  */
 class Journal
 {

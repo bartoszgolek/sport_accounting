@@ -6,14 +6,14 @@
  * Time: 09:33
  */
 
-namespace AppBundle\Validator\Constraints;
+namespace AppBundle\Validator\Constraints\Journal;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
  */
-class ContainsDebitOrCredit extends Constraint
+class DebitOrCredit extends Constraint
 {
     public $bothFilledMessage = 'Only Debit or Credit can be filled.';
     public $bothEmptyMessage = 'Debit or Credit has to be filled.';

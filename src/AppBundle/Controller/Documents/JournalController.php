@@ -100,30 +100,17 @@ class JournalController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-
-            if ($editForm->get('commit')->isClicked())
-            {
-                $vouchers = [];
-                foreach ($documents_journal->getPositions() as $position)
-                {
-                    /** @var JournalPosition $position */
-                    $voucher            = $position->getVoucher();
-
-                    if (!key_exists($voucher, $vouchers))
-                        $vouchers[$voucher] = $position->getValue();
-                    else
-                        $vouchers[$voucher] = $vouchers[$voucher] + $position->getValue();
-                }
-                foreach ($vouchers as $voucher)
-                    if ($voucher != 0) {
-                        $this->addFlash('error', 'All vouchers have to be balanced to zero.');
-                        return $this->redirectToRoute('documents_journal_edit', array('id' => $documents_journal->getId()));
-                    }
-            }
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($documents_journal);
             $em->flush();
+
+
+            if ($editForm->get('commit')->isClicked())
+            {
+                $commit_journal = $this->get('commit_journal');
+                $commit_journal->commit($documents_journal);
+                return $this->redirectToRoute('documents_journal_index');
+            }
 
             return $this->redirectToRoute('documents_journal_edit', array('id' => $documents_journal->getId()));
         }

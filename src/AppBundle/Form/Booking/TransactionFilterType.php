@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Form\Documents;
+namespace AppBundle\Form\Booking;
 
-use AppBundle\Form\Type\JournalTypesType;
-use AppBundle\Form\Type\RowsCollectionType;
+use AppBundle\Form\Type\BookTypesType;
+use AppBundle\Form\Type\DatePickerType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class JournalType extends AbstractType
+class TransactionFilterType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -19,13 +19,10 @@ class JournalType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('description')
-            ->add('type', JournalTypesType::class)
-            ->add('positions', RowsCollectionType::class, array(
-                'entry_type' => JournalPositionType::class
-            ))
-            ->add('commit', SubmitType::class)
-            ->add('save', SubmitType::class)
+            ->add('from_date', DatePickerType::class)
+            ->add('to_date', DatePickerType::class)
+            ->add('filter', SubmitType::class)
+            ->add('reset', SubmitType::class)
         ;
     }
     
@@ -35,7 +32,7 @@ class JournalType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Documents\Journal'
+            'data_class' => 'AppBundle\Entity\Booking\TransactionFilter'
         ));
     }
 }

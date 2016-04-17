@@ -12,6 +12,7 @@
     use AppBundle\Entity\Documents\Journal;
     use AppBundle\Entity\Documents\JournalPosition;
     use AppBundle\Form\Documents\JournalTypes;
+    use DateTime;
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -47,11 +48,35 @@
                 $journal->setDescription("Posting invoice " . $invoice->getInvoiceNumber());
                 $journal->setType(JournalTypes::BASIC);
 
-                $this->createJournalPosition($journal, $voucher, "Invoice number ".$invoice->getInvoiceNumber(), $invoice->getSchool(), $invoice->getAmount(), null);
-                $this->createJournalPosition($journal, $voucher, "Reinforcements", $invoice->getReinforcementsBook(), null, $reinforcements_amount);
+                $this->createJournalPosition(
+                    $journal,
+                    $voucher,
+                    $invoice->getInvoiceDate(),
+                    "Invoice number ".$invoice->getInvoiceNumber(),
+                    $invoice->getSchool(),
+                    $invoice->getAmount(),
+                    null);
+                if ($reinforcements_amount > 0) {
+                    $this->createJournalPosition(
+                        $journal,
+                        $voucher,
+                        $invoice->getInvoiceDate(),
+                        "Reinforcements",
+                        $invoice->getReinforcementsBook(),
+                        null,
+                        $reinforcements_amount);
+                }
 
-                foreach ($invoice->getPlayers() as $player)
-                    $this->createJournalPosition($journal, $voucher, "Participation", $player, null, $per_player_amount);
+                foreach ($invoice->getPlayers() as $player) {
+                    $this->createJournalPosition(
+                        $journal,
+                        $voucher,
+                        $invoice->getInvoiceDate(),
+                        "Participation",
+                        $player,
+                        null,
+                        $per_player_amount);
+                }
 
                 $em->persist($journal);
                 $em->flush();
@@ -72,10 +97,11 @@
          * @param $credit
          * @param $debit
          */
-        protected function createJournalPosition(Journal $journal, $voucher, $description, $book, $credit, $debit)
+        protected function createJournalPosition(Journal $journal, $voucher, DateTime $date, $description, $book, $credit, $debit)
         {
             $pos = new JournalPosition();
             $pos->setVoucher($voucher);
+            $pos->setDate($date);
             $pos->setDescription($description);
             $pos->setBook($book);
             $pos->setCredit($credit);

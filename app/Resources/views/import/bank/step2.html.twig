@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Select fields</h1>
+
+    <div class="file-content">
+    <pre>{% for line in lines %}{{ line }}{% endfor %}
+    </pre>
+    </div>
+
+    <div class="file-content">
+    <pre>{{ bank_import }}</pre>
+    </div>
+{% endblock %}

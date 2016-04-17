@@ -3,14 +3,12 @@
 namespace AppBundle\Entity\Documents;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * JournalPosition
  *
  * @ORM\Table(name="documents_journal_position")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Documents\JournalPositionRepository")
- * @AppBundle\Validator\Constraints\ContainsDebitOrCredit
  */
 class JournalPosition
 {
@@ -66,6 +64,13 @@ class JournalPosition
      * @ORM\Column(name="voucher", type="string", length=255)
      */
     private $voucher;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="date", nullable=true)
+     */
+    private $date;
 
 
     /**
@@ -209,6 +214,30 @@ class JournalPosition
     public function getVoucher()
     {
         return $this->voucher;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return JournalPosition
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 
     /**

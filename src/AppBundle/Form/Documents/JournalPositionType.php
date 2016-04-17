@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Documents;
 
 use AppBundle\Entity\Documents\JournalPosition;
+use AppBundle\Form\Type\DatePickerType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Finder\Comparator\NumberComparator;
@@ -23,6 +24,7 @@ class JournalPositionType extends AbstractType
     {
         $builder
             ->add('voucher')
+            ->add('date', DatePickerType::class)
             ->add('book', EntityType::class, array(
                 'class' => 'AppBundle\Entity\Booking\Book',
                 'query_builder' => function(EntityRepository $er) use($options) {

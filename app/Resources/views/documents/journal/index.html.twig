@@ -23,10 +23,12 @@
                 <td>{{ documents_journal.description }}</td>
                 <td>{{ attribute(book_types, documents_journal.type) }}</td>
                 <td>{% if documents_journal.committed %}Yes{% else %}No{% endif %}</td>
-                <td>{{ documents_journal.commitTime }}</td>
+                <td>{{ documents_journal.commitTime|date }}</td>
                 <td>
                     <a class="btn btn-default" href="{{ path('documents_journal_show', { 'id': documents_journal.id }) }}">show</a>
+                    {% if not documents_journal.committed %}
                     <a class="btn btn-default" href="{{ path('documents_journal_edit', { 'id': documents_journal.id }) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

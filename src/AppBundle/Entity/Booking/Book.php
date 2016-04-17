@@ -101,7 +101,7 @@ class Book
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="transaction")
+     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="book")
      */
     private $transactions;
 

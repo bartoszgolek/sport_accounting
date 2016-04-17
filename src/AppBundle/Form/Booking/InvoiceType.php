@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Booking;
 
+use AppBundle\Form\Type\DatePickerType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,7 +22,7 @@ class InvoiceType extends AbstractType
     {
         $builder
             ->add('invoice_number')
-            ->add('invoice_date', DateType::class)
+            ->add('invoice_date', DatePickerType::class)
             ->add('amount', NumberType::class, array(
                 'scale' => 2
             ))

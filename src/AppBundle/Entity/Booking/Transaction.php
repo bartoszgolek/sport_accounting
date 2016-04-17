@@ -50,6 +50,20 @@ class Transaction
      */
     private $debit;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="voucher", type="string", length=255)
+     */
+    private $voucher;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="date", nullable=true)
+     */
+    private $date;
+
 
     /**
      * Get id
@@ -155,5 +169,66 @@ class Transaction
     public function getBook()
     {
         return $this->book;
+    }
+
+    /**
+     * Set voucher
+     *
+     * @param string $voucher
+     *
+     * @return Transaction
+     */
+    public function setVoucher($voucher)
+    {
+        $this->voucher = $voucher;
+
+        return $this;
+    }
+
+    /**
+     * Get voucher
+     *
+     * @return string
+     */
+    public function getVoucher()
+    {
+        return $this->voucher;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Transaction
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Get credit
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        $debit_value = $this->debit !== null ? $this->debit : 0;
+        $credit_value = $this->credit !== null ? $this->credit : 0;
+
+        return sprintf("%20.2f", (-1 * $debit_value) + $credit_value);
     }
 }
