@@ -8,6 +8,7 @@
 
     namespace AppBundle\Form\Type;
 
+    use AppBundle\Entity\LineSeparators;
     use AppBundle\Form\Booking\BookTypes;
     use Symfony\Component\Form\AbstractType;
     use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,11 +25,7 @@
         public function configureOptions(OptionsResolver $resolver)
         {
             $resolver->setDefaults(array(
-                'choices' => array(
-                    'Unix (LF)' => "\n",
-                    'Classic Mac (CR)' => "\r",
-                    'Windows (CRLF)' => "\r\n"
-                )
+                'choices' => array_flip(LineSeparators::getArray())
             ));
         }
 

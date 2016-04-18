@@ -1,14 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Select fields</h1>
+    <h1>File options</h1>
 
-    <div class="file-content">
-    <pre>{% for line in lines %}{{ line }}{% endfor %}
+    <a class="btn btn-default" href="{{ path('documents_journal_index') }}">Cancel</a>
+
+    {{ form_start(csv_form) }}
+    {{ form_widget(csv_form) }}
+    {{ form_end(csv_form) }}
+
+    <pre>
+{{ bank_import }}
     </pre>
-    </div>
-
-    <div class="file-content">
-    <pre>{{ bank_import }}</pre>
-    </div>
 {% endblock %}

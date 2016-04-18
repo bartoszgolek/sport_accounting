@@ -13,20 +13,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CsvFile
 {
-    /**
-     * @Assert\NotBlank(message="Please, upload the bank CSV file.")
-     * @Assert\File(mimeTypes={ "text/plain" })
-     */
-    private $file;
+    private $fileName;
 
-    public function getFile()
+    public function getFileName()
     {
-        return $this->file;
+        return $this->fileName;
     }
 
-    public function setFile($file)
+    public function setFileName($fileName)
     {
-        $this->file = $file;
+        $this->fileName = $fileName;
 
         return $this;
     }
@@ -55,6 +51,23 @@ class CsvFile
     public function setLineSeparator($lineSeparator)
     {
         $this->lineSeparator = $lineSeparator;
+
+        return $this;
+    }
+
+    /**
+     * @var integer
+     */
+    private $skip;
+
+    public function getSkip()
+    {
+        return $this->skip;
+    }
+
+    public function setSkip($skip)
+    {
+        $this->skip = $skip;
 
         return $this;
     }

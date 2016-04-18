@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Choose columns</h1>
+
+    <a class="btn btn-default" href="{{ path('documents_journal_index') }}">Cancel</a>
+
+    {{ form_start(csv_form) }}
+    {{ form_widget(csv_form) }}
+    {{ form_end(csv_form) }}
+
+    <table class="table table-striped">
+    {%  if has_header_row %}
+        <thead>
+            <tr>
+            {% for header in headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+            </tr>
+        </thead>
+    {% endif %}
+        <tbody>
+        {% for row in rows %}
+            <tr>
+            {% for field in row %}
+                <td>{{ field }}</td>
+            {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
