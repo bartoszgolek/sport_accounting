@@ -33,7 +33,9 @@ class CsvFileType extends AbstractType
             ->add('fieldSeparator', FieldSeparatorType::class)
             ->add('lineSeparator', LineSeparatorType::class)
             ->add('skip', IntegerType::class)
-            ->add('hasHeaderRow', CheckboxType::class)
+            ->add('hasHeaderRow', CheckboxType::class, array(
+                'required' => false
+            ))
             ->add('upload', SubmitType::class)
         ;
     }

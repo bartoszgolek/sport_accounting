@@ -11,7 +11,7 @@ namespace AppBundle\Entity\Import;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-class CsvFile
+class UploadFile
 {
     /**
      * @Assert\NotBlank(message="Please, upload the bank CSV file.")

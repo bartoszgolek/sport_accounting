@@ -3,6 +3,8 @@
 namespace AppBundle\Controller\Import;
 
 use AppBundle\Entity\LineSeparators;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -61,7 +63,7 @@ class BankController extends Controller
     }
 
     /**
-     * @Route("/step2", name="import_bank")
+     * @Route("/step2", name="import_bank_step2")
      * @Method({"GET", "POST"})
      */
     public function step2Action(Request $request)
@@ -90,7 +92,7 @@ class BankController extends Controller
                     self::SKIP => $csvFile->getSkip()
                 ]);
 
-            return $this->redirectToRoute('import_bank_step2');
+            return $this->redirectToRoute('import_bank_step3');
         }
 
         return $this->render('import/bank/step2.html.twig',
@@ -101,7 +103,7 @@ class BankController extends Controller
     }
 
     /**
-     * @Route("/step3", name="import_bank_step2")
+     * @Route("/step3", name="import_bank_step3")
      * @Method({"GET", "POST"})
      */
     public function step3Action(Request $request)
