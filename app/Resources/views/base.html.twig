@@ -20,24 +20,27 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Sport accounting</a>
+                    <a class="navbar-brand" href="{{ path('homepage') }}">Sport accounting</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        {% if is_granted("ROLE_ADMIN") %}
                         <li><a href="{{ path('booking_book_index') }}">Accounts</a></li>
+                        {% endif %}
+                        {% if is_granted("ROLE_MANAGER") %}
                         <li><a href="{{ path('documents_journal_index') }}">Journals</a></li>
+                        {% endif %}
+                        {% if is_granted("ROLE_ADMIN") %}
                         <li><a href="{{ path('user_index') }}">Users</a></li>
+                        {% endif %}
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                         <li><a href="{{ path('booking_my_book_show') }}">My account</a></li>
-                        <!--<li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Generators <span class="caret"></span></a>
-                            <ul class="dropdown-menu">-->
-                                <li><a href="{{ path('booking_invoice_new') }}">Generate Invoice Journal</a></li>
-                                <li><a href="{{ path('import_bank') }}">Import bank transactions</a></li>
-                        <!--    </ul>
-                        </li>-->
+                        {% endif %}
+                        {% if is_granted("ROLE_MANAGER") %}
+                        <li><a href="{{ path('booking_invoice_new') }}">Generate Invoice Journal</a></li>
+                        <li><a href="{{ path('import_bank') }}">Import bank transactions</a></li>
                         {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -93,8 +96,10 @@
             {% endif %}
         {% endfor %}
 
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <div class="col-sm-12">
+            {% block body %}{% endblock %}
+            {% block javascripts %}{% endblock %}
+        </div>
 
         <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     </body>

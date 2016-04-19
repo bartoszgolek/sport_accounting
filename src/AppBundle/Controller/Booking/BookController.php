@@ -2,7 +2,10 @@
 
 namespace AppBundle\Controller\Booking;
 
+use AppBundle\Entity\Booking\Transaction;
+use AppBundle\Entity\Booking\TransactionFilter;
 use AppBundle\Form\Booking\BookTypes;
+use AppBundle\Form\Booking\TransactionFilterType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -44,7 +47,7 @@ class BookController extends Controller
     public function newAction(Request $request)
     {
         $booking_book = new Book();
-        $form = $this->createForm('AppBundle\Form\Booking\BookType', $booking_book);
+        $form = $this->createForm(BookType::class, $booking_book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -67,14 +70,77 @@ class BookController extends Controller
      * @Route("/{id}", name="booking_book_show")
      * @Method("GET")
      */
-    public function showAction(Book $booking_book)
+    public function showAction(Request $request, Book $book)
     {
-        $deleteForm = $this->createDeleteForm($booking_book);
+        $filter = new TransactionFilter();
+        $filterForm = $this->createForm(TransactionFilterType::class, $filter);
+        $filterForm->handleRequest($request);
 
-        return $this->render('booking/book/show.html.twig', array(
-            'booking_book' => $booking_book,
-            'book_types' => BookTypes::getArray(),
-            'delete_form' => $deleteForm->createView(),
+        if ($filterForm->isSubmitted() && $filterForm->isValid()) {
+            if ($filterForm->get('reset')->isClicked()) {
+                $filter = new TransactionFilter();
+                $filterForm = $this->createForm(TransactionFilterType::class, $filter);
+            }
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $transactionRepository = $em->getRepository(Transaction::class);
+        $transactions = $transactionRepository
+            ->createQueryBuilder('t')
+            ->where(":from_date <= t.date")
+            ->andWhere(":to_date >= t.date")
+            ->andWhere(":book_id = t.book")
+            ->orderBy("t.date", "desc")
+            ->setParameter("from_date", $filter->getFromDate())
+            ->setParameter("to_date", $filter->getToDate())
+            ->setParameter("book_id", $book->getId())
+            ->getQuery()
+            ->execute();
+
+        $saldo = $transactionRepository
+            ->createQueryBuilder('t')
+            ->select(array(
+                'debit' => 'SUM(t.debit)',
+                'credit' => 'SUM(t.credit)',
+            ))
+            ->where(":from_date > t.date")
+            ->andWhere(":book_id = t.book")
+            ->groupBy("t.book")
+            ->setParameter("from_date", $filter->getFromDate())
+            ->setParameter("book_id", $book->getId())
+            ->getQuery()
+            ->execute();
+
+        if (count($saldo) > 0) {
+            $debit_sum_before = $saldo[0][1];
+            $credit_sum_before = $saldo[0][2];
+            $value_sum_before = (-1 * $debit_sum_before) + $credit_sum_before;
+        } else {
+            $debit_sum_before = 0;
+            $credit_sum_before = 0;
+            $value_sum_before = 0;
+        }
+
+        $debit_sum_after = $debit_sum_before;
+        $credit_sum_after = $credit_sum_before;
+        $value_sum_after = $value_sum_before;
+        foreach ($transactions as $transaction){
+            $debit_sum_after += $transaction->getDebit();
+            $credit_sum_after += $transaction->getCredit();
+            $value_sum_after += $transaction->getValue();
+        }
+
+        return $this->render('booking/my_book/show.html.twig', array(
+            'book' => $book,
+            'transactions' => $transactions,
+            'saldo' => $saldo,
+            'filter_form' => $filterForm->createView(),
+            'credit_sum_after' => sprintf("%20.2f", $credit_sum_after),
+            'debit_sum_after' => sprintf("%20.2f", $debit_sum_after),
+            'value_sum_after' => sprintf("%20.2f", $value_sum_after),
+            'credit_sum_before' => sprintf("%20.2f", $credit_sum_before),
+            'debit_sum_before' => sprintf("%20.2f", $debit_sum_before),
+            'value_sum_before' => sprintf("%20.2f", $value_sum_before),
         ));
     }
 
@@ -84,22 +150,22 @@ class BookController extends Controller
      * @Route("/{id}/edit", name="booking_book_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Book $booking_book)
+    public function editAction(Request $request, Book $book)
     {
-        $deleteForm = $this->createDeleteForm($booking_book);
-        $editForm = $this->createForm('AppBundle\Form\Booking\BookType', $booking_book);
+        $deleteForm = $this->createDeleteForm($book);
+        $editForm = $this->createForm(BookType::class, $book);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($booking_book);
+            $em->persist($book);
             $em->flush();
 
-            return $this->redirectToRoute('booking_book_edit', array('id' => $booking_book->getId()));
+            return $this->redirectToRoute('booking_book_edit', array('id' => $book->getId()));
         }
 
         return $this->render('booking/book/edit.html.twig', array(
-            'booking_book' => $booking_book,
+            'booking_book' => $book,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -111,14 +177,14 @@ class BookController extends Controller
      * @Route("/{id}", name="booking_book_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, Book $booking_book)
+    public function deleteAction(Request $request, Book $book)
     {
-        $form = $this->createDeleteForm($booking_book);
+        $form = $this->createDeleteForm($book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($booking_book);
+            $em->remove($book);
             $em->flush();
         }
 

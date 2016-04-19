@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: bgolek
+ * User: Bartosz Gołek
  * Date: 2016-04-15
  * Time: 11:10
  */
@@ -21,15 +21,18 @@ class VouchersSumIsZeroValidator extends ConstraintValidator
         {
             $voucher            = $position->getVoucher();
 
-            if (!key_exists($voucher, $vouchers))
+            if (!key_exists($voucher, $vouchers)) {
                 $vouchers[$voucher] = $position->getValue();
-            else
+            } else {
                 $vouchers[$voucher] = $vouchers[$voucher] + $position->getValue();
-        }
-        foreach ($vouchers as $voucher)
-            if ($voucher != 0) {
-                $this->context->buildViolation($constraint->message)
-                    ->addViolation();
             }
+        }
+        foreach ($vouchers as $voucher => $value) {
+            $value = round($value, 2);
+            if ($value != 0) {
+                $this->context->buildViolation(sprintf($constraint->message, $voucher, $value))
+                              ->addViolation();
+            }
+        }
     }
 }

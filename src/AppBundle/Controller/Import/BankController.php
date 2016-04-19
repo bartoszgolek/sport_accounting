@@ -6,7 +6,6 @@ use AppBundle\Entity\Documents\Journal;
 use AppBundle\Entity\Documents\JournalPosition;
 use AppBundle\Entity\Import\BankData;
 use AppBundle\Entity\LineSeparators;
-use AppBundle\Form\Documents\JournalType;
 use AppBundle\Form\Documents\JournalTypes;
 use AppBundle\Form\Import\BankDataType;
 use AppBundle\Form\Import\CsvFileType;
@@ -14,13 +13,11 @@ use AppBundle\Form\Import\UploadFileType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Session\Session;
 use AppBundle\Entity\Import\UploadFile;
 use AppBundle\Entity\Import\CsvFile;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * User controller.
@@ -83,8 +80,8 @@ class BankController extends Controller
         /** @var Session $s */
         $s = $this->container->get('session');
         $bankImportInfo = $s->get(self::BANK_IMPORT_CSV_SESSION_FIELD);
-        $fileName = $bankImportInfo[Self::FILE_NAME];
-        $originalName = $bankImportInfo[Self::ORIG_FILE_NAME];
+        $fileName = $bankImportInfo[self::FILE_NAME];
+        $originalName = $bankImportInfo[self::ORIG_FILE_NAME];
         $bankImport = file_get_contents($fileName);
 
         $csvFile = new CsvFile();
@@ -103,7 +100,7 @@ class BankController extends Controller
                     self::FIELD_SEPARATOR => $csvFile->getFieldSeparator(),
                     self::LINE_SEPARATOR  => $csvFile->getLineSeparator(),
                     self::HAS_HEADER_ROW  => $csvFile->getHasHeaderRow(),
-                    Self::ORIG_FILE_NAME  => $csvFile->getOriginalName(),
+                    self::ORIG_FILE_NAME  => $csvFile->getOriginalName(),
                     self::SKIP => $csvFile->getSkip()
                 ]);
 
@@ -126,7 +123,7 @@ class BankController extends Controller
         /** @var Session $s */
         $s = $this->container->get('session');
         $bankImportInfo = $s->get(self::BANK_IMPORT_CSV_SESSION_FIELD);
-        $bankImport = file_get_contents($bankImportInfo[Self::FILE_NAME]);
+        $bankImport = file_get_contents($bankImportInfo[self::FILE_NAME]);
 
 
         $lineDelimiter = LineSeparators::getCode($bankImportInfo[self::LINE_SEPARATOR]);

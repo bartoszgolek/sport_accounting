@@ -3,11 +3,15 @@
 {% block body %}
     <h1>Choose columns</h1>
 
-    <a class="btn btn-default" href="{{ path('documents_journal_index') }}">Cancel</a>
+    <div>
+        <a class="btn btn-default" href="{{ path('documents_journal_index') }}">Cancel</a>
+    </div>
 
-    {{ form_start(bank_data_form) }}
-    {{ form_widget(bank_data_form) }}
-    {{ form_end(bank_data_form) }}
+    <div class="col-md-3 col-md-offset-4">
+        {{ form_start(bank_data_form) }}
+        {{ form_widget(bank_data_form) }}
+        {{ form_end(bank_data_form) }}
+    </div>
 
     <table class="table table-striped">
         <thead>

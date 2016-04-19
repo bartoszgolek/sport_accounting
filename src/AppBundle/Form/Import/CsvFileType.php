@@ -8,11 +8,11 @@
 
 namespace AppBundle\Form\Import;
 
+use AppBundle\Entity\Import\CsvFile;
 use AppBundle\Form\Type\FieldSeparatorType;
 use AppBundle\Form\Type\LineSeparatorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -47,7 +47,7 @@ class CsvFileType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Import\CsvFile'
+            'data_class' => CsvFile::class
         ));
     }
 }

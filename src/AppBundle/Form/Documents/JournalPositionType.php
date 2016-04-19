@@ -2,14 +2,12 @@
 
 namespace AppBundle\Form\Documents;
 
+use AppBundle\Entity\Booking\Book;
 use AppBundle\Entity\Documents\JournalPosition;
 use AppBundle\Form\Type\DatePickerType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Finder\Comparator\NumberComparator;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,7 +24,7 @@ class JournalPositionType extends AbstractType
             ->add('voucher')
             ->add('date', DatePickerType::class)
             ->add('book', EntityType::class, array(
-                'class' => 'AppBundle\Entity\Booking\Book',
+                'class' => Book::class,
                 'query_builder' => function(EntityRepository $er) use($options) {
                     return $er->createQueryBuilder('b')->orderBy('b.description', 'ASC');
                 },
@@ -53,7 +51,7 @@ class JournalPositionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Documents\JournalPosition'
+            'data_class' => JournalPosition::class
         ));
     }
 }

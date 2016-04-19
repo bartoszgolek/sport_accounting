@@ -1,29 +1,55 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Booking\Book</h1>
+    <h1>{{ book.description }}</h1>
 
-    <a class="btn btn-default" href="{{ path('booking_book_index') }}">Back to the list</a>
-    <a class="btn btn-default" href="{{ path('booking_book_edit', { 'id': booking_book.id }) }}">Edit</a>
+    <div class="col-md-3 col-md-offset-4">
+        {{ form_start(filter_form) }}
+        {{ form_widget(filter_form) }}
+        {{ form_end(filter_form) }}
+    </div>
 
-    <table class="table table-striped">
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Voucher</th>
+            <th>Description</th>
+            <th>Debit</th>
+            <th>Credit</th>
+            <th>Wartość</th>
+        </tr>
+        </thead>
         <tbody>
+        <tr>
+            <th>#</th>
+            <th></th>
+            <th>Saldo</th>
+            <th>{{ debit_sum_after }}</th>
+            <th>{{ credit_sum_after }}</th>
+            <th>{{ value_sum_after }}</th>
+        </tr>
+        {% for transaction in transactions %}
             <tr>
-                <th>Id</th>
-                <td>{{ booking_book.id }}</td>
+                <td>{{ transaction.date|date }}</td>
+                <td>{{ transaction.voucher }}</td>
+                <td>{{ transaction.description }}</td>
+                <td>{{ transaction.debit }}</td>
+                <td>{{ transaction.credit }}</td>
+                <td>{{ transaction.value }}</td>
             </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ booking_book.description }}</td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ attribute(book_types, booking_book.type) }}</td>
-            </tr>
+        {% endfor %}
         </tbody>
+        <tfoot>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>Saldo przed</th>
+            <th>{{ debit_sum_before }}</th>
+            <th>{{ credit_sum_before }}</th>
+            <th>{{ value_sum_before }}</th>
+        </tr>
+        </tfoot>
     </table>
 
-    {{ form_start(delete_form) }}
-        <input class="btn btn-default" type="submit" value="Delete">
-    {{ form_end(delete_form) }}
 {% endblock %}

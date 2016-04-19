@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: bgolek
+ * User: Bartosz Gołek
  * Date: 2016-04-15
  * Time: 09:33
  */
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class VouchersSumIsZero extends Constraint
 {
-    public $message = 'Sum of Every voucher should be 0.';
+    public $message = "Sum of Every voucher should be 0. But for voucher %s is %d!";
 
     public function getTargets()
     {

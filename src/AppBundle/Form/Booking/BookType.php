@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Booking;
 
+use AppBundle\Entity\Booking\Book;
 use AppBundle\Form\Type\BookTypesType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,7 +28,7 @@ class BookType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Booking\Book'
+            'data_class' => Book::class
         ));
     }
 }

@@ -9,9 +9,6 @@
 namespace AppBundle\Entity\Booking;
 
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints\DateTime;
-
 class TransactionFilter
 {
     public function __construct()

@@ -6,12 +6,12 @@
      * Time: 22:12
      */
 
-    namespace AppBundle\Controller\Booking;
+    namespace AppBundle\Controller\Creators;
 
-    use AppBundle\Entity\Booking\Invoice;
+    use AppBundle\Entity\Creators\Invoice;
     use AppBundle\Entity\Documents\Journal;
     use AppBundle\Entity\Documents\JournalPosition;
-    use AppBundle\Form\Booking\InvoiceType;
+    use AppBundle\Form\Creators\InvoiceType;
     use AppBundle\Form\Documents\JournalTypes;
     use DateTime;
     use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +29,7 @@
         /**
          * Lists all Booking\Book entities.
          *
-         * @Route("/booking/invoice/new", name="booking_invoice_new")
+         * @Route("/creators/invoice/new", name="booking_invoice_new")
          * @Method({"GET", "POST"})
          */
         public function newAction(Request $request)
@@ -85,7 +85,7 @@
                 return $this->redirectToRoute('documents_journal_edit', array('id' => $journal->getId()));
             }
 
-            return $this->render('booking/invoice/new.html.twig', array(
+            return $this->render('creators/invoice/new.html.twig', array(
                 'invoice' => $invoice,
                 'form' => $form->createView(),
             ));

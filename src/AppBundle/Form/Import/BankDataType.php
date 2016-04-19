@@ -1,13 +1,14 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: bgolek
+ * User: Bartosz Gołek
  * Date: 2016-04-19
  * Time: 09:39
  */
 
 namespace AppBundle\Form\Import;
 
+use AppBundle\Entity\Booking\Book;
 use AppBundle\Entity\Import\BankData;
 use AppBundle\Form\Booking\BookTypes;
 use Doctrine\ORM\EntityRepository;
@@ -29,7 +30,7 @@ class BankDataType extends AbstractType
     {
         $builder
             ->add('bank_account', EntityType::class, [
-                'class' => 'AppBundle\Entity\Booking\Book',
+                'class' => Book::class,
                 'query_builder' => function(EntityRepository $er) use($options) {
                     return $er->createQueryBuilder('b')
                               ->where('b.type = :bookType')

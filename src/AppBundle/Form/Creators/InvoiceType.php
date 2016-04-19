@@ -1,12 +1,14 @@
 <?php
 
-namespace AppBundle\Form\Booking;
+namespace AppBundle\Form\Creators;
 
+use AppBundle\Entity\Booking\Book;
+use AppBundle\Entity\Creators\Invoice;
+use AppBundle\Form\Booking\BookTypes;
 use AppBundle\Form\Type\DatePickerType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,7 +29,7 @@ class InvoiceType extends AbstractType
                 'scale' => 2
             ))
             ->add('school', EntityType::class, array(
-                'class' => 'AppBundle\Entity\Booking\Book',
+                'class' => Book::class,
                 'query_builder' => function(EntityRepository $er) use($options) {
                     return $er->createQueryBuilder('b')
                               ->where('b.type = :bookType')
@@ -43,7 +45,7 @@ class InvoiceType extends AbstractType
                 'scale' => 2
             ))
             ->add('reinforcements_book', EntityType::class, array(
-                'class' => 'AppBundle\Entity\Booking\Book',
+                'class' => Book::class,
                 'query_builder' => function(EntityRepository $er) use($options) {
                     return $er->createQueryBuilder('b')
                               ->where('b.type = :bookType')
@@ -55,7 +57,7 @@ class InvoiceType extends AbstractType
                 'multiple' => false
             ))
             ->add('players', EntityType::class, array(
-                'class' => 'AppBundle\Entity\Booking\Book',
+                'class' => Book::class,
                 'query_builder' => function(EntityRepository $er) use($options) {
                     return $er->createQueryBuilder('b')
                               ->where('b.type = :bookType')
@@ -74,7 +76,7 @@ class InvoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Booking\Invoice'
+            'data_class' => Invoice::class
         ));
     }
 }

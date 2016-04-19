@@ -3,10 +3,13 @@
 {% block body %}
     <h1>Booking\Book creation</h1>
 
-    <a class="btn btn-default" href="{{ path('booking_book_index') }}">Back to the list</a>
-
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input class="btn btn-default" type="submit" value="Save" />
-    {{ form_end(form) }}
+    <div>
+        <a class="btn btn-default" href="{{ path('booking_book_index') }}">Back to the list</a>
+    </div>
+    <div class="col-md-3 col-md-offset-4">
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <input class="btn btn-default" type="submit" value="Save" />
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

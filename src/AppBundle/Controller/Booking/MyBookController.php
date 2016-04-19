@@ -8,19 +8,17 @@
 
     namespace AppBundle\Controller\Booking;
 
-    use AppBundle\Entity\Booking\Invoice;
     use AppBundle\Entity\Booking\Transaction;
     use AppBundle\Entity\Booking\TransactionFilter;
     use AppBundle\Entity\Documents\Journal;
     use AppBundle\Entity\Documents\JournalPosition;
     use AppBundle\Entity\User;
-    use AppBundle\Form\Documents\JournalTypes;
+    use AppBundle\Form\Booking\TransactionFilterType;
     use DateTime;
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Bundle\FrameworkBundle\Controller\Controller;
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-    use Symfony\Component\Intl\NumberFormatter\NumberFormatter;
 
     /**
      *
@@ -38,13 +36,13 @@
         public function showAction(Request $request)
         {
             $filter = new TransactionFilter();
-            $filterForm = $this->createForm('AppBundle\Form\Booking\TransactionFilterType', $filter);
+            $filterForm = $this->createForm(TransactionFilterType::class, $filter);
             $filterForm->handleRequest($request);
 
             if ($filterForm->isSubmitted() && $filterForm->isValid()) {
                 if ($filterForm->get('reset')->isClicked()) {
                     $filter = new TransactionFilter();
-                    $filterForm = $this->createForm('AppBundle\Form\Booking\TransactionFilterType', $filter);
+                    $filterForm = $this->createForm(TransactionFilterType::class, $filter);
                 }
             }
 
@@ -52,6 +50,11 @@
             $usr = $this->container->get('security.token_storage')->getToken()->getUser();
 
             $book = $usr->getBook();
+
+            if ($book === null) {
+                $this->addFlash('error', 'user has no attached account!');
+                return $this->render('booking/my_book/nobook.html.twig');
+            }
 
             $em = $this->getDoctrine()->getManager();
             $transactionRepository = $em->getRepository(Transaction::class);
@@ -67,7 +70,7 @@
                 ->getQuery()
                 ->execute();
 
-            $saldo = $transactionRepository
+            $balance = $transactionRepository
                 ->createQueryBuilder('t')
                 ->select(array(
                     'debit' => 'SUM(t.debit)',
@@ -81,9 +84,9 @@
                 ->getQuery()
                 ->execute();
 
-            if (count($saldo) > 0) {
-                $debit_sum_before = $saldo[1];
-                $credit_sum_before = $saldo[2];
+            if (count($balance) > 0) {
+                $debit_sum_before = $balance[0][1];
+                $credit_sum_before = $balance[0][2];
                 $value_sum_before = (-1 * $debit_sum_before) + $credit_sum_before;
             } else {
                 $debit_sum_before = 0;
@@ -103,7 +106,6 @@
             return $this->render('booking/my_book/show.html.twig', array(
                 'book' => $book,
                 'transactions' => $transactions,
-                'saldo' => $saldo,
                 'filter_form' => $filterForm->createView(),
                 'credit_sum_after' => sprintf("%20.2f", $credit_sum_after),
                 'debit_sum_after' => sprintf("%20.2f", $debit_sum_after),

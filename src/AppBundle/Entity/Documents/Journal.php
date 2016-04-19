@@ -190,7 +190,7 @@ class Journal
      *
      * @param JournalPosition $position
      */
-    public function removeTransaction(JournalPosition $position)
+    public function removePosition(JournalPosition $position)
     {
         $this->positions->removeElement($position);
     }

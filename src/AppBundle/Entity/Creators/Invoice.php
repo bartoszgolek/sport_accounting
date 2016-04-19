@@ -6,9 +6,10 @@
  * Time: 23:36
  */
 
-namespace AppBundle\Entity\Booking;
+namespace AppBundle\Entity\Creators;
 
 
+use AppBundle\Entity\Booking\Book;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -88,11 +89,11 @@ class Invoice
     /**
      * Add player
      *
-     * @param \AppBundle\Entity\Booking\Book $player
+     * @param Book $player
      *
      * @return Invoice
      */
-    public function addPlayer(\AppBundle\Entity\Booking\Book $player)
+    public function addPlayer(Book $player)
     {
         $this->players[] = $player;
 
@@ -102,9 +103,9 @@ class Invoice
     /**
      * Remove player
      *
-     * @param \AppBundle\Entity\Booking\Book $player
+     * @param Book $player
      */
-    public function removePlayer(\AppBundle\Entity\Booking\Book $player)
+    public function removePlayer(Book $player)
     {
         $this->players->removeElement($player);
     }
@@ -124,7 +125,7 @@ class Invoice
     /**
      * Get Reinforcements Book
      *
-     * @return \AppBundle\Entity\Booking\Book
+     * @return Book
      */
     public function getReinforcementsBook()
     {
@@ -134,7 +135,7 @@ class Invoice
     /**
      * Set Reinforcements Book
      *
-     * @return \AppBundle\Entity\Booking\Book
+     * @return Book
      */
     public function setReinforcementsBook(Book $book)
     {
@@ -146,7 +147,7 @@ class Invoice
     /**
      * Get School Book
      *
-     * @return \AppBundle\Entity\Booking\Book
+     * @return Book
      */
     public function getSchool()
     {
@@ -156,7 +157,7 @@ class Invoice
     /**
      * Set School Book
      *
-     * @return \AppBundle\Entity\Booking\Book
+     * @return Book
      */
     public function setSchool(Book $school)
     {

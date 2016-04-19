@@ -2,9 +2,10 @@
 
 namespace AppBundle\Controller\Documents;
 
-use AppBundle\Entity\Documents\JournalPosition;
 use AppBundle\Form\Booking\BookTypes;
+use AppBundle\Form\Documents\JournalType;
 use AppBundle\Form\Documents\JournalTypes;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -47,7 +48,7 @@ class JournalController extends Controller
     public function newAction(Request $request)
     {
         $documents_journal = new Journal();
-        $form = $this->createForm('AppBundle\Form\Documents\JournalType', $documents_journal);
+        $form = $this->createForm(JournalType::class, $documents_journal);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -88,34 +89,50 @@ class JournalController extends Controller
      * @Route("/{id}/edit", name="documents_journal_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Journal $documents_journal)
+    public function editAction(Request $request, Journal $journal)
     {
-        if ($documents_journal->getCommitted() == true) {
+        if ($journal->getCommitted() == true) {
             $this->addFlash('error', 'Cannot edit committed journal!');
             return $this->redirectToRoute('documents_journal_index');
         }
 
-        $deleteForm = $this->createDeleteForm($documents_journal);
-        $editForm = $this->createForm('AppBundle\Form\Documents\JournalType', $documents_journal);
+        $deleteForm = $this->createDeleteForm($journal);
+
+        $originalPositions = new ArrayCollection();
+
+        // Create an ArrayCollection of the current Tag objects in the database
+        foreach ($journal->getPositions() as $position) {
+            $originalPositions->add($position);
+        }
+
+        $editForm = $this->createForm(JournalType::class, $journal);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($documents_journal);
+
+            // remove the relationship between the position and the Task
+            foreach ($originalPositions as $position) {
+                if (false === $journal->getPositions()->contains($position)) {
+                    $em->remove($position);
+                }
+            }
+
+            $em->persist($journal);
             $em->flush();
 
 
             if ($editForm->get('commit')->isClicked())
             {
                 $commit_journal = $this->get('commit_journal');
-                $commit_journal->commit($documents_journal);
+                $commit_journal->commit($journal);
                 return $this->redirectToRoute('documents_journal_index');
             }
 
-            return $this->redirectToRoute('documents_journal_edit', array('id' => $documents_journal->getId()));
+            return $this->redirectToRoute('documents_journal_edit', array('id' => $journal->getId()));
         }
 
-        return $this->renderEditForm($documents_journal, $editForm, $deleteForm);
+        return $this->renderEditForm($journal, $editForm, $deleteForm);
     }
 
     /**

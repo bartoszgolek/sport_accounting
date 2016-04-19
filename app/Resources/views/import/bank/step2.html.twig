@@ -3,11 +3,15 @@
 {% block body %}
     <h1>File options</h1>
 
-    <a class="btn btn-default" href="{{ path('documents_journal_index') }}">Cancel</a>
+    <div>
+        <a class="btn btn-default" href="{{ path('documents_journal_index') }}">Cancel</a>
+    </div>
 
-    {{ form_start(csv_form) }}
-    {{ form_widget(csv_form) }}
-    {{ form_end(csv_form) }}
+    <div class="col-md-3 col-md-offset-4">
+        {{ form_start(csv_form) }}
+        {{ form_widget(csv_form) }}
+        {{ form_end(csv_form) }}
+    </div>
 
     <pre>
 {{ bank_import }}

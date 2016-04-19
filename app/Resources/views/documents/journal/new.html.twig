@@ -3,11 +3,14 @@
 {% block body %}
     <h1>Journal creation</h1>
 
-    <a class="btn btn-default" href="{{ path('documents_journal_index') }}">Back to the list</a>
+    <div>
+        <a class="btn btn-default" href="{{ path('documents_journal_index') }}">Back to the list</a>
+    </div>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input class="btn btn-default" type="submit" value="Save" />
-    {{ form_end(form) }}
+    <div class="col-md-3 col-md-offset-4">
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
 
 {% endblock %}

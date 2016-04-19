@@ -8,10 +8,8 @@
 
 namespace AppBundle\Form\Import;
 
-use AppBundle\Form\Type\FieldSeparatorType;
-use AppBundle\Form\Type\LineSeparatorType;
+use AppBundle\Entity\Import\UploadFile;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -38,7 +36,7 @@ class UploadFileType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Import\UploadFile'
+            'data_class' => UploadFile::class
         ));
     }
 }
