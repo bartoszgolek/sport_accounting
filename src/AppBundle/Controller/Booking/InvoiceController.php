@@ -11,6 +11,7 @@
     use AppBundle\Entity\Booking\Invoice;
     use AppBundle\Entity\Documents\Journal;
     use AppBundle\Entity\Documents\JournalPosition;
+    use AppBundle\Form\Booking\InvoiceType;
     use AppBundle\Form\Documents\JournalTypes;
     use DateTime;
     use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +35,7 @@
         public function newAction(Request $request)
         {
             $invoice = new Invoice();
-            $form = $this->createForm('AppBundle\Form\Booking\InvoiceType', $invoice);
+            $form = $this->createForm(InvoiceType::class, $invoice);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {

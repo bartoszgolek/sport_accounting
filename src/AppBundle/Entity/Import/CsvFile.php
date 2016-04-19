@@ -15,6 +15,8 @@ class CsvFile
 {
     private $fileName;
 
+    private $originalName;
+
     public function getFileName()
     {
         return $this->fileName;
@@ -87,5 +89,21 @@ class CsvFile
         $this->hasHeaderRow = $hasHeaderRow;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOriginalName()
+    {
+        return $this->originalName;
+    }
+
+    /**
+     * @param mixed $originalName
+     */
+    public function setOriginalName($originalName)
+    {
+        $this->originalName = $originalName;
     }
 }

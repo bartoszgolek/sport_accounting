@@ -5,12 +5,11 @@
 
     <a class="btn btn-default" href="{{ path('documents_journal_index') }}">Cancel</a>
 
-    {{ form_start(csv_form) }}
-    {{ form_widget(csv_form) }}
-    {{ form_end(csv_form) }}
+    {{ form_start(bank_data_form) }}
+    {{ form_widget(bank_data_form) }}
+    {{ form_end(bank_data_form) }}
 
     <table class="table table-striped">
-    {%  if has_header_row %}
         <thead>
             <tr>
             {% for header in headers %}
@@ -18,7 +17,6 @@
             {% endfor %}
             </tr>
         </thead>
-    {% endif %}
         <tbody>
         {% for row in rows %}
             <tr>
@@ -26,6 +24,7 @@
                 <td>{{ field }}</td>
             {% endfor %}
             </tr>
+        {% endfor %}
         </tbody>
     </table>
 {% endblock %}

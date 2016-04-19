@@ -32,7 +32,8 @@ class JournalPositionType extends AbstractType
                 },
                 'choice_label' => 'description',
                 'expanded' => false,
-                'multiple' => false
+                'multiple' => false,
+                'placeholder' => ""
             ))
             ->add('description')
             ->add('debit', NumberType::class, array(

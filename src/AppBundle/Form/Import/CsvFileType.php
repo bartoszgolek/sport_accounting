@@ -30,6 +30,7 @@ class CsvFileType extends AbstractType
     {
         $builder
             ->add('fileName', HiddenType::class)
+            ->add('originalName', HiddenType::class)
             ->add('fieldSeparator', FieldSeparatorType::class)
             ->add('lineSeparator', LineSeparatorType::class)
             ->add('skip', IntegerType::class)
