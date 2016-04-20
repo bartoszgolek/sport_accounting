@@ -12,6 +12,7 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Account</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
             <tr>
                 <td><a class="btn btn-default" href="{{ path('player_show', { 'id': player.id }) }}">{{ player.id }}</a></td>
                 <td>{{ player.name }}</td>
+                <td>{%  if not player.book is null %}{{ player.book.description }}{% endif %}</td>
                 <td>
                     <a class="btn btn-default" href="{{ path('player_show', { 'id': player.id }) }}">show</a>
                     <a class="btn btn-default" href="{{ path('player_edit', { 'id': player.id }) }}">edit</a>

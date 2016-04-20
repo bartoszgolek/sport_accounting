@@ -68,7 +68,7 @@ class BookController extends Controller
      * Finds and displays a Booking\Book entity.
      *
      * @Route("/{id}", name="booking_book_show")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
     public function showAction(Request $request, Book $book)
     {
