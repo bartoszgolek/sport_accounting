@@ -159,15 +159,14 @@ class BankController extends Controller
         if ($bankDataForm->isSubmitted() && $bankDataForm->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-            $voucher = uniqid("V");
-
             $journal = new Journal();
             $journal->setDescription("Bank import - "  . $originalName);
             $journal->setType(JournalTypes::BASIC);
 
             foreach ($rows as $row) {
-                $amount = $row[$bankData->getTransactionDate()];
+                $amount = $this->toFloat($row[$bankData->getAmount()]);
                 if ($amount != 0) {
+                    $voucher = uniqid("V");
                     $this->createJournalPosition(
                         $journal,
                         $voucher,
@@ -244,5 +243,21 @@ class BankController extends Controller
         $description = str_replace("{Amount}", $fields[$bankData->getAmount()], $description);
 
         return $description;
+    }
+
+    function toFloat($number) {
+        $dotPos = strrpos($number, '.');
+        $commaPos = strrpos($number, ',');
+        $sep = (($dotPos > $commaPos) && $dotPos) ? $dotPos :
+            ((($commaPos > $dotPos) && $commaPos) ? $commaPos : false);
+
+        if (!$sep) {
+            return floatval(preg_replace("/[^0-9]/", "", $number));
+        }
+
+        return floatval(
+            preg_replace("/[^0-9]/", "", substr($number, 0, $sep)) . '.' .
+            preg_replace("/[^0-9]/", "", substr($number, $sep + 1, strlen($number)))
+        );
     }
 }
