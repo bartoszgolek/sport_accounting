@@ -30,6 +30,7 @@
                         <li><a href="{{ path('booking_book_index') }}">Accounts</a></li>
                         {% endif %}
                         {% if is_granted("ROLE_MANAGER") %}
+                        <li><a href="{{ path('player_index') }}">Players</a></li>
                         <li><a href="{{ path('documents_journal_index') }}">Journals</a></li>
                         {% endif %}
                         {% if is_granted("ROLE_ADMIN") %}

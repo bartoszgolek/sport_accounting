@@ -4,6 +4,7 @@ namespace AppBundle\Form\Creators;
 
 use AppBundle\Entity\Booking\Book;
 use AppBundle\Entity\Creators\Invoice;
+use AppBundle\Entity\Player;
 use AppBundle\Form\Booking\BookTypes;
 use AppBundle\Form\Type\DatePickerType;
 use Doctrine\ORM\EntityRepository;
@@ -57,14 +58,12 @@ class InvoiceType extends AbstractType
                 'multiple' => false
             ))
             ->add('players', EntityType::class, array(
-                'class' => Book::class,
+                'class' => Player::class,
                 'query_builder' => function(EntityRepository $er) use($options) {
-                    return $er->createQueryBuilder('b')
-                              ->where('b.type = :bookType')
-                              ->setParameter('bookType', BookTypes::PLAYER)
-                              ->orderBy('b.description', 'ASC');
+                    return $er->createQueryBuilder('p')
+                              ->orderBy('p.name', 'ASC');
                 },
-                'choice_label' => 'description',
+                'choice_label' => 'name',
                 'expanded' => true,
                 'multiple' => true
             ));

@@ -74,7 +74,7 @@
                         $voucher,
                         $invoice->getInvoiceDate(),
                         "Participation",
-                        $player,
+                        $player->getBook(),
                         null,
                         $per_player_amount);
                 }

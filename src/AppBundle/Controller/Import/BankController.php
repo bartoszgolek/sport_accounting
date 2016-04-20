@@ -218,12 +218,12 @@ class BankController extends Controller
     protected function createJournalPosition(Journal $journal, $voucher, \DateTime $date, $description, $book, $debit, $credit)
     {
         $pos = new JournalPosition();
-        $pos->setVoucher($voucher);
-        $pos->setDate($date);
-        $pos->setDescription($description);
-        $pos->setBook($book);
-        $pos->setCredit($credit);
-        $pos->setDebit($debit);
+        $pos->setVoucher($voucher)
+            ->setDate($date)
+            ->setDescription($description)
+            ->setBook($book)
+            ->setCredit($credit)
+            ->setDebit($debit);
         $journal->addPosition($pos);
     }
 

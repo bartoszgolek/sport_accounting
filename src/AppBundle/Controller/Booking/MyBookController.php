@@ -49,10 +49,17 @@
             /** @var User $usr */
             $usr = $this->container->get('security.token_storage')->getToken()->getUser();
 
-            $book = $usr->getBook();
+            $player = $usr->getPlayer();
+
+            if ($player === null) {
+                $this->addFlash('error', 'User has no attached player!');
+                return $this->render('booking/my_book/nobook.html.twig');
+            }
+
+            $book = $player->getBook();
 
             if ($book === null) {
-                $this->addFlash('error', 'user has no attached account!');
+                $this->addFlash('error', 'User player has no attached account!');
                 return $this->render('booking/my_book/nobook.html.twig');
             }
 

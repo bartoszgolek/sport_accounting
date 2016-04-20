@@ -1,7 +1,7 @@
 <?php
     namespace AppBundle\Entity;
 
-    use AppBundle\Entity\Booking\Book;
+    use AppBundle\Entity\Player;
     use FOS\UserBundle\Model\User as BaseUser;
     use Doctrine\ORM\Mapping as ORM;
 
@@ -26,32 +26,32 @@
         /**
          * @var int
          *
-         * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Booking\Book")
-         * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
+         * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Player")
+         * @ORM\JoinColumn(name="player_id", referencedColumnName="id")
          */
-        private $book;
+        private $player;
 
         /**
-         * Set book
+         * Set player
          *
-         * @param Book $book
+         * @param Player $player
          *
          * @return User
          */
-        public function setBook(Book $book = null)
+        public function setPlayer(Player $player = null)
         {
-            $this->book = $book;
+            $this->player = $player;
 
             return $this;
         }
 
         /**
-         * Get book
+         * Get player
          *
-         * @return Book
+         * @return Player
          */
-        public function getBook()
+        public function getPlayer()
         {
-            return $this->book;
+            return $this->player;
         }
     }

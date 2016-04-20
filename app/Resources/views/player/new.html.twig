@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Player creation</h1>
+
+    <div>
+        <a class="btn btn-default" href="{{ path('player_index') }}">Back to the list</a>
+    </div>
+
+    <div class="col-md-3 col-md-offset-4">
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <input class="btn btn-default" type="submit" value="Create" />
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
