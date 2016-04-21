@@ -23,7 +23,8 @@ class JournalType extends AbstractType
             ->add('type', JournalTypesType::class)
             ->add('positions', RowsCollectionType::class, array(
                 'entry_type' => JournalPositionType::class,
-                'allow_delete' => true
+                'allow_delete' => true,
+                'allow_add'    => true,
             ))
             ->add('commit', SubmitType::class)
             ->add('save', SubmitType::class)
