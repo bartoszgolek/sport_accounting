@@ -12,31 +12,4 @@
     {{ form_start(delete_form) }}
         <input class="btn btn-default" type="submit" value="Delete">
     {{ form_end(delete_form) }}
-
-    <script>
-        jQuery(document).ready(function() {
-            $collectionHolder = $('#journal').find('tbody');
-
-            // add a delete link to all of the existing tag form li elements
-            $collectionHolder.find('tr').each(function() {
-                addPositionFormDeleteLink($(this));
-            });
-
-            function addPositionFormDeleteLink($tr) {
-                var $removeFormTd = $('<td />');
-                var $removeFormButton = $('<button class="btn btn-default">Delete</button>');
-                $removeFormTd.append($removeFormButton);
-
-                $tr.append($removeFormTd);
-
-                $removeFormButton.on('click', function(e) {
-                    // prevent the link from creating a "#" on the URL
-                    e.preventDefault();
-
-                    // remove the li for the tag form
-                    $tr.remove();
-                });
-            }
-        });
-    </script>
 {% endblock %}

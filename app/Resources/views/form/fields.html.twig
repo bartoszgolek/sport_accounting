@@ -1,7 +1,7 @@
 {% block rows_collection_widget %}
     {% spaceless %}
         {% if form|length > 1 %}
-        <table class="table table-striped table-hover" {% if not form.vars.prototype is null %}data-prototype="{{ form_widget(form.vars.prototype)|e }}"{%  endif %}>
+        <table class="rows_collection table table-striped table-hover">
             <thead>
                 <tr>
                     <th>Lp.</th>
@@ -10,7 +10,7 @@
                     {% endfor %}
                 </tr>
             </thead>
-            <tbody>
+            <tbody {% if not form.vars.prototype is null %}data-prototype="{{ form_widget(form.vars.prototype)|e }}"{%  endif %}>
                 {% for child in form %}
                 <tr>
                     <th>{{ loop.index }}</th>
@@ -22,5 +22,68 @@
             </tbody>
         </table>
         {%  endif %}
+
+        {% if form.vars.allow_delete == true %}
+        <script>
+            jQuery(document).ready(function() {
+                $collectionHolder = $('.rows_collection').find('tbody');
+
+                // add a delete link to all of the existing tag form li elements
+                $collectionHolder.find('tr').each(function() {
+                    addPositionFormDeleteLink($(this));
+                });
+
+                function addPositionFormDeleteLink($tr) {
+                    var $removeFormTd = $('<td />');
+                    var $removeFormButton = $('<button class="btn btn-default">Delete</button>');
+                    $removeFormTd.append($removeFormButton);
+
+                    $tr.append($removeFormTd);
+
+                    $removeFormButton.on('click', function(e) {
+                        // prevent the link from creating a "#" on the URL
+                        e.preventDefault();
+
+                        // remove the li for the tag form
+                        $tr.remove();
+                    });
+                }
+            });
+        </script>
+        {% endif %}
+
+        {% if form.vars.allow_add == true %}
+        <a class="btn btn-default add_row" href="#">Add</a>
+        <script>
+            jQuery(document).ready(function() {
+                $collectionHolder = $('.rows_collection').find('tbody');
+                var $addLink = $('.add_row');
+
+                $collectionHolder.data('index', $collectionHolder.children('tr').length);
+
+                $addLink.on('click', function(e) {
+                    e.preventDefault();
+
+                    addRow($collectionHolder);
+                });
+
+                function addRow(collectionHolder, $newLinkLi) {
+                    // Get the data-prototype explained earlier
+                    var prototype = collectionHolder.data('prototype');
+
+                    // get the new index
+                    var index = collectionHolder.data('index');
+
+                    // Replace '__name__' in the prototype's HTML to
+                    // instead be a number based on how many items we have
+                    var newForm = prototype.replace(/__name__/g, index);
+
+                    // increase the index with one for the next item
+                    collectionHolder.data('index', index + 1);
+                    collectionHolder.append(newForm);
+                }
+            });
+        </script>
+        {% endif %}
     {% endspaceless %}
 {% endblock %}
