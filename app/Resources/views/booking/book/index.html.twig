@@ -17,7 +17,7 @@
         <tbody>
         {% for booking_book in booking_books %}
             <tr>
-                <td><a href="{{ path('booking_book_show', { 'id': booking_book.id }) }}">{{ booking_book.id }}</a></td>
+                <td><a class="btn btn-default" href="{{ path('booking_book_show', { 'id': booking_book.id }) }}">{{ booking_book.id }}</a></td>
                 <td>{{ booking_book.description }}</td>
                 <td>{{ attribute(book_types, booking_book.type) }}</td>
                 <td>
