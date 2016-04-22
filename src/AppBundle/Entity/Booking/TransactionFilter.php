@@ -13,10 +13,12 @@ class TransactionFilter
 {
     public function __construct()
     {
-        $this->from_date    = new \DateTime('first day of this month');
-        $d = new \DateTime('first day of this month');
-        $d->modify( 'next month' );
-        $this->to_date = $d;
+        $from_date       = new \DateTime('first day of this month');
+        $from_date->modify( '-3 month' );
+        $this->from_date = $from_date;
+        $to_date         = new \DateTime('first day of this month');
+        $to_date->modify( 'next month' );
+        $this->to_date = $to_date;
     }
 
     /**
