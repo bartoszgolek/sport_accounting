@@ -40,8 +40,23 @@
                         <li><a href="{{ path('booking_my_book_show') }}">My account</a></li>
                         {% endif %}
                         {% if is_granted("ROLE_MANAGER") %}
-                        <li><a href="{{ path('booking_invoice_new') }}">Generate Invoice Journal</a></li>
-                        <li><a href="{{ path('import_bank') }}">Import bank transactions</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Actions <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('booking_invoice_new') }}">Generate Invoice Journal</a></li>
+                                <li><a href="{{ path('import_bank') }}">Import bank transactions</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Reports <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('booking_book_balanceReport') }}">Balance</a></li>
+                            </ul>
+                        </li>
                         {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">

@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller\Booking;
 
+use AppBundle\Entity\Booking\AccountsFilter;
 use AppBundle\Entity\Booking\Transaction;
 use AppBundle\Entity\Booking\TransactionFilter;
+use AppBundle\Form\Booking\AccountsFilterType;
 use AppBundle\Form\Booking\BookTypes;
 use AppBundle\Form\Booking\TransactionFilterType;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +36,52 @@ class BookController extends Controller
 
         return $this->render('booking/book/index.html.twig', array(
             'booking_books' => $booking_books,
+            'book_types' => BookTypes::getArray()
+        ));
+    }
+
+    /**
+     * Lists all Booking\Book entities.
+     *
+     * @Route("/balancereport", name="booking_book_balanceReport")
+     * @Method({"GET", "POST"})
+     */
+    public function balanceReportAction(Request $request)
+    {
+        $filter = new AccountsFilter();
+        $filterForm = $this->createForm(AccountsFilterType::class, $filter);
+        $filterForm->handleRequest($request);
+
+        if ($filterForm->isSubmitted() && $filterForm->isValid()) {
+            if ($filterForm->get('reset')->isClicked()) {
+                $filter = new AccountsFilter();
+                $filterForm = $this->createForm(AccountsFilterType::class, $filter);
+            }
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $bookRepository = $em->getRepository(Book::class);
+        $books = $bookRepository
+            ->createQueryBuilder('b')
+            ->join("b.transactions", "t")
+            ->where(":type <= b.type")
+            ->orderBy("b.description", "desc")
+            ->setParameter("type", $filter->getType())
+            ->select([
+                "b.id",
+                "b.description",
+                "b.type",
+                'debit' => 'SUM(t.debit) as debit',
+                'credit' => 'SUM(t.credit) as credit',
+                'balance' => '(-1 * SUM(t.debit)) + SUM(t.credit) as balance',
+            ])
+            ->groupBy("b.id")
+            ->getQuery()
+            ->execute();
+
+        return $this->render('booking/book/balanceReport.html.twig', array(
+            'booking_books' => $books,
+            'filter_form' => $filterForm->createView(),
             'book_types' => BookTypes::getArray()
         ));
     }

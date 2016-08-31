@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Balance report</h1>
+
+    <div class="col-md-3 col-md-offset-4">
+        {{ form_start(filter_form) }}
+        {{ form_widget(filter_form) }}
+        {{ form_end(filter_form) }}
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for booking_book in booking_books %}
+            <tr>
+                <td>{{ booking_book.id }}</td>
+                <td>{{ booking_book.description }}</td>
+                <td>{{ attribute(book_types, booking_book.type) }}</td>
+                <td>{{ booking_book.credit }}</td>
+                <td>{{ booking_book.debit }}</td>
+                <td>{{ booking_book.balance }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
