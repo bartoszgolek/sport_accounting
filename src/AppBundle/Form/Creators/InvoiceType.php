@@ -4,7 +4,7 @@ namespace AppBundle\Form\Creators;
 
 use AppBundle\Entity\Booking\Book;
 use AppBundle\Entity\Creators\Invoice;
-use AppBundle\Entity\Player;
+use AppBundle\Entity\Member;
 use AppBundle\Form\Booking\BookTypes;
 use AppBundle\Form\Type\DatePickerType;
 use Doctrine\ORM\EntityRepository;
@@ -26,10 +26,10 @@ class InvoiceType extends AbstractType
         $builder
             ->add('invoice_number')
             ->add('invoice_date', DatePickerType::class)
-            ->add('amount', NumberType::class, array(
+            ->add('amount', NumberType::class, [
                 'scale' => 2
-            ))
-            ->add('school', EntityType::class, array(
+            ])
+            ->add('school', EntityType::class, [
                 'class' => Book::class,
                 'query_builder' => function(EntityRepository $er) use($options) {
                     return $er->createQueryBuilder('b')
@@ -40,25 +40,25 @@ class InvoiceType extends AbstractType
                 'choice_label' => 'description',
                 'expanded' => false,
                 'multiple' => false
-            ))
+            ])
             ->add('number_of_reinforcements', IntegerType::class)
-            ->add('reinforcements_cost', NumberType::class, array(
+            ->add('reinforcements_cost', NumberType::class, [
                 'scale' => 2
-            ))
-            ->add('reinforcements_book', EntityType::class, array(
+            ])
+            ->add('reinforcements_book', EntityType::class, [
                 'class' => Book::class,
                 'query_builder' => function(EntityRepository $er) use($options) {
                     return $er->createQueryBuilder('b')
                               ->where('b.type = :bookType')
-                              ->setParameter('bookType', BookTypes::PLAYER)
+                              ->setParameter('bookType', BookTypes::MEMBER)
                               ->orderBy('b.description', 'ASC');
                 },
                 'choice_label' => 'description',
                 'expanded' => false,
                 'multiple' => false
-            ))
-            ->add('players', EntityType::class, array(
-                'class' => Player::class,
+            ])
+            ->add('members', EntityType::class, [
+                'class' => Member::class,
                 'query_builder' => function(EntityRepository $er) use($options) {
                     return $er->createQueryBuilder('p')
                               ->orderBy('p.name', 'ASC');
@@ -66,7 +66,7 @@ class InvoiceType extends AbstractType
                 'choice_label' => 'name',
                 'expanded' => true,
                 'multiple' => true
-            ));
+            ]);
     }
     
     /**
@@ -74,8 +74,8 @@ class InvoiceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Invoice::class
-        ));
+        ]);
     }
 }

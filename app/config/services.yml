@@ -1,10 +1,21 @@
-# Learn more about services, parameters and containers at
-# http://symfony.com/doc/current/book/service_container.html
-parameters:
-#    parameter_name: value
+imports:
+    - { resource: repositories.yml }
 
 services:
-    commit_journal:
-        class: AppBundle\Business\CommitJournal
-        arguments:
-            entityManager: "@doctrine.orm.entity_manager"
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  AppBundle\:
+    resource: '../../src/AppBundle/*'
+    exclude: '../../src/AppBundle/{Controller,Tests,Entity,Repository}'
+
+  AppBundle\Controller\:
+    resource: '../../src/AppBundle/Controller/*'
+    public: true
+
+  AppBundle\Business\CommitJournal:
+    class: AppBundle\Business\CommitJournal
+    arguments:
+      - '@doctrine.orm.entity_manager'

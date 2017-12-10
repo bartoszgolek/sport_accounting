@@ -22,7 +22,7 @@ class Transaction
     private $id;
 
     /**
-     * @var int
+     * @var Book
      *
      * @ORM\ManyToOne(targetEntity="Book", inversedBy="book")
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
@@ -80,7 +80,7 @@ class Transaction
      *
      * @param string $description
      *
-     * @return Transaction
+     * @return $this
      */
     public function setDescription($description)
     {
@@ -104,7 +104,7 @@ class Transaction
      *
      * @param string $credit
      *
-     * @return Transaction
+     * @return $this
      */
     public function setCredit($credit)
     {
@@ -128,7 +128,7 @@ class Transaction
      *
      * @param string $debit
      *
-     * @return Transaction
+     * @return $this
      */
     public function setDebit($debit)
     {
@@ -150,11 +150,11 @@ class Transaction
     /**
      * Set book
      *
-     * @param \AppBundle\Entity\Booking\Book $book
+     * @param Book $book
      *
-     * @return Transaction
+     * @return $this
      */
-    public function setBook(\AppBundle\Entity\Booking\Book $book = null)
+    public function setBook(Book $book = null)
     {
         $this->book = $book;
 
@@ -164,7 +164,7 @@ class Transaction
     /**
      * Get book
      *
-     * @return \AppBundle\Entity\Booking\Book
+     * @return Book
      */
     public function getBook()
     {
@@ -176,7 +176,7 @@ class Transaction
      *
      * @param string $voucher
      *
-     * @return Transaction
+     * @return $this
      */
     public function setVoucher($voucher)
     {
@@ -200,7 +200,7 @@ class Transaction
      *
      * @param \DateTime $date
      *
-     * @return Transaction
+     * @return $this
      */
     public function setDate($date)
     {

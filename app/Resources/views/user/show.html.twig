@@ -3,8 +3,10 @@
 {% block body %}
     <h1>User</h1>
 
-    <a class="btn btn-default" href="{{ path('user_index') }}">Back to the list</a>
-    <a class="btn btn-default" href="{{ path('user_edit', { 'id': user.id }) }}">Edit</a>
+    <div>
+        <a class="btn btn-default" href="{{ path('user_index') }}">Back to the list</a>
+        <a class="btn btn-default" href="{{ path('user_edit', { 'id': user.id }) }}">Edit</a>
+    </div>
 
     <div class="col-md-3 col-md-offset-4">
         <table class="table table-striped table-hover">
@@ -22,8 +24,12 @@
                     <td>{{ user.email }}</td>
                 </tr>
                 <tr>
-                    <th>Book</th>
-                    <td>{% if not user.book is null %}{{ user.book.description }}{% endif %}</td>
+                    <th>Member</th>
+                    <td>
+                        {% if not user.member is null %}
+                            <a href="{{ path('member_show', { 'id': user.member.id }) }}">{{ user.member.name }}</a>
+                        {% endif %}
+                    </td>
                 </tr>
             </tbody>
         </table>

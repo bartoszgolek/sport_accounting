@@ -19,7 +19,11 @@
                 <td><a class="btn btn-default" href="{{ path('user_show', { 'id': user.id }) }}">{{ user.id }}</a></td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
-                <td>{% if not user.player is null %}{{ user.player.name }}{% endif %}</td>
+                <td>
+                    {% if not user.member is null %}
+                        <a href="{{ path('member_show', { 'id': user.member.id }) }}">{{ user.member.name }}</a>
+                    {% endif %}
+                </td>
                 <td>
                     <a class="btn btn-default" href="{{ path('user_show', { 'id': user.id }) }}">show</a>
                     <a class="btn btn-default" href="{{ path('user_edit', { 'id': user.id }) }}">edit</a>

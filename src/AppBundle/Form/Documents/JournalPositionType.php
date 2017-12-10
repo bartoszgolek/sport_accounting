@@ -23,7 +23,7 @@ class JournalPositionType extends AbstractType
         $builder
             ->add('voucher')
             ->add('date', DatePickerType::class)
-            ->add('book', EntityType::class, array(
+            ->add('book', EntityType::class, [
                 'class' => Book::class,
                 'query_builder' => function(EntityRepository $er) use($options) {
                     return $er->createQueryBuilder('b')->orderBy('b.description', 'ASC');
@@ -32,16 +32,16 @@ class JournalPositionType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'placeholder' => ""
-            ))
+            ])
             ->add('description')
-            ->add('debit', NumberType::class, array(
+            ->add('debit', NumberType::class, [
                 'scale' => 2,
                 'required' => false,
-            ))
-            ->add('credit', NumberType::class, array(
+            ])
+            ->add('credit', NumberType::class, [
                 'scale' => 2,
                 'required' => false,
-            ))
+            ])
         ;
     }
     
@@ -50,8 +50,8 @@ class JournalPositionType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => JournalPosition::class
-        ));
+        ]);
     }
 }

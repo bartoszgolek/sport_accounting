@@ -17,11 +17,11 @@
     class BookTypes
     {
         const BANK = 0;
-        const PLAYER = 1;
+        const MEMBER = 1;
         const SCHOOL = 2;
 
         const BANK_NAME = 'Bank';
-        const PLAYER_NAME = 'Player';
+        const MEMBER_NAME = 'Member';
         const SCHOOL_NAME = 'School';
 
         static function getName($bookType)
@@ -33,10 +33,10 @@
 
         static function getArray()
         {
-            return array(
+            return [
                 self::BANK => self::BANK_NAME,
-                self::PLAYER => self::PLAYER_NAME,
+                self::MEMBER => self::MEMBER_NAME,
                 self::SCHOOL => self::SCHOOL_NAME
-            );
+            ];
         }
     }

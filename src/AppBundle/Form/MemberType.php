@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Booking\Book;
+use AppBundle\Entity\Member;
 use AppBundle\Form\Booking\BookTypes;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -10,7 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PlayerType extends AbstractType
+class MemberType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -20,19 +21,19 @@ class PlayerType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('book', EntityType::class, array(
+            ->add('book', EntityType::class, [
                 'class' => Book::class,
                 'query_builder' => function(EntityRepository $er) use($options) {
                     return $er->createQueryBuilder('b')
                               ->where('b.type = :bookType')
-                              ->setParameter('bookType', BookTypes::PLAYER)
+                              ->setParameter('bookType', BookTypes::MEMBER)
                               ->orderBy('b.description', 'ASC');
                 },
                 'choice_label' => 'description',
                 'expanded' => false,
                 'multiple' => false,
                 'placeholder' => ""
-            ))
+            ])
         ;
     }
     
@@ -41,8 +42,8 @@ class PlayerType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Player'
-        ));
+        $resolver->setDefaults([
+            'data_class' => Member::class
+        ]);
     }
 }

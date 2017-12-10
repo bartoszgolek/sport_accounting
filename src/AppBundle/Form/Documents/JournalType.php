@@ -21,11 +21,11 @@ class JournalType extends AbstractType
         $builder
             ->add('description')
             ->add('type', JournalTypesType::class)
-            ->add('positions', RowsCollectionType::class, array(
+            ->add('positions', RowsCollectionType::class, [
                 'entry_type' => JournalPositionType::class,
                 'allow_delete' => true,
                 'allow_add'    => true,
-            ))
+            ])
             ->add('commit', SubmitType::class)
             ->add('save', SubmitType::class)
         ;
@@ -36,8 +36,8 @@ class JournalType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Journal::class
-        ));
+        ]);
     }
 }

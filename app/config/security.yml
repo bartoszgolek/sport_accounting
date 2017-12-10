@@ -50,6 +50,6 @@ security:
         - { path: ^/booking_book/, role: ROLE_ADMIN }
         - { path: ^/documents_journal/, role: ROLE_MANAGER }
         - { path: ^/creators/invoice/, role: ROLE_MANAGER }
-        - { path: ^/player/, role: ROLE_MANAGER }
+        - { path: ^/member/, role: ROLE_MANAGER }
         - { path: ^/import/bank/, role: ROLE_MANAGER }
         - { path: ^/booking/my_book/, role: ROLE_USER }

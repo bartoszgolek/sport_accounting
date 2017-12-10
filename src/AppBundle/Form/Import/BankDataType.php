@@ -28,8 +28,9 @@ class BankDataType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $columns = $options['columns'];
         $builder
-            ->add('bank_account', EntityType::class, [
+            ->add('bank_account_column', EntityType::class, [
                 'class' => Book::class,
                 'query_builder' => function(EntityRepository $er) use($options) {
                     return $er->createQueryBuilder('b')
@@ -41,21 +42,21 @@ class BankDataType extends AbstractType
                 'expanded' => false,
                 'multiple' => false
             ])
-            ->add('commit_date', ChoiceType::class, ['choices' => $options['columns']])
-            ->add('transaction_date', ChoiceType::class, ['choices' => $options['columns']])
-            ->add('title', ChoiceType::class, ['choices' => $options['columns']])
-            ->add('account', ChoiceType::class, ['choices' => $options['columns']])
-            ->add('account_number', ChoiceType::class, ['choices' => $options['columns']])
-            ->add('amount', ChoiceType::class, ['choices' => $options['columns']])
+            ->add('commit_date_column', ChoiceType::class, ['choices' => $columns])
+            ->add('transaction_date_column', ChoiceType::class, ['choices' => $columns])
+            ->add('title_column', ChoiceType::class, ['choices' => $columns])
+            ->add('account_name_column', ChoiceType::class, ['choices' => $columns])
+            ->add('account_number_column', ChoiceType::class, ['choices' => $columns])
+            ->add('amount_column', ChoiceType::class, ['choices' => $columns])
             ->add('journal_description_template')
             ->add('import', SubmitType::class);
     }
 
-    public function getDefaultOptions(array $options)
+    public function getDefaultOptions()
     {
-        return array(
+        return [
             'columns' => []
-        );
+        ];
     }
 
     /**
@@ -63,9 +64,9 @@ class BankDataType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => BankData::class,
             'columns' => []
-        ));
+        ]);
     }
 }

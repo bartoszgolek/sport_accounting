@@ -2,15 +2,19 @@
 
 namespace AppBundle\Controller\Documents;
 
+use AppBundle\Entity\Documents\JournalPosition;
 use AppBundle\Form\Booking\BookTypes;
 use AppBundle\Form\Documents\JournalType;
 use AppBundle\Form\Documents\JournalTypes;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Documents\Journal;
+use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -30,13 +34,13 @@ class JournalController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $documents_journals = $em->getRepository('AppBundle:Documents\Journal')->findAll();
+        $documents_journals = $em->getRepository(Journal::class)->findAll();
 
-        return $this->render('documents/journal/index.html.twig', array(
+        return $this->render('documents/journal/index.html.twig', [
             'documents_journals' => $documents_journals,
             'book_types' => BookTypes::getArray(),
             'journal_types' => JournalTypes::getArray()
-        ));
+        ]);
     }
 
     /**
@@ -44,26 +48,67 @@ class JournalController extends Controller
      *
      * @Route("/new", name="documents_journal_new")
      * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request): Response
     {
-        $documents_journal = new Journal();
-        $form = $this->createForm(JournalType::class, $documents_journal);
+        $journal = new Journal();
+        $voucher = uniqid("V");
+
+        $position = $this->createJournalPosition(
+            $journal,
+            $voucher,
+            new \DateTime(),
+            null,
+            null,
+            null,
+            null
+        );
+
+        $journal->addPosition($position);
+        $journal->addPosition($position);
+
+        $form = $this->createForm(JournalType::class, $journal);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($documents_journal);
+            $em->persist($journal);
             $em->flush();
 
-            return $this->redirectToRoute('documents_journal_show', array('id' => $documents_journal->getId()));
+            return $this->redirectToRoute('documents_journal_show', ['id' => $journal->getId()]);
         }
 
-        return $this->render('documents/journal/new.html.twig', array(
-            'documents_journal' => $documents_journal,
+        return $this->render('documents/journal/new.html.twig', [
+            'journal' => $journal,
             'journal_types' => JournalTypes::getArray(),
             'form' => $form->createView(),
-        ));
+        ]);
+    }
+
+    /**
+     * @param Journal $journal
+     * @param $voucher
+     * @param \DateTime $date
+     * @param $description
+     * @param $book
+     * @param $credit
+     * @param $debit
+     */
+    protected function createJournalPosition(Journal $journal, $voucher, \DateTime $date, $description, $book, $debit, $credit)
+    {
+        $pos = new JournalPosition();
+        $pos->setVoucher($voucher)
+            ->setDate($date)
+            ->setDescription($description)
+            ->setBook($book)
+            ->setCredit($credit)
+            ->setDebit($debit);
+
+        return $pos;
     }
 
     /**
@@ -71,16 +116,20 @@ class JournalController extends Controller
      *
      * @Route("/{id}", name="documents_journal_show")
      * @Method("GET")
+     *
+     * @param Journal $documents_journal
+     *
+     * @return Response
      */
     public function showAction(Journal $documents_journal)
     {
         $deleteForm = $this->createDeleteForm($documents_journal);
 
-        return $this->render('documents/journal/show.html.twig', array(
+        return $this->render('documents/journal/show.html.twig', [
             'documents_journal' => $documents_journal,
             'journal_types' => JournalTypes::getArray(),
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -88,6 +137,11 @@ class JournalController extends Controller
      *
      * @Route("/{id}/edit", name="documents_journal_edit")
      * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param Journal $journal
+     *
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Journal $journal)
     {
@@ -129,7 +183,7 @@ class JournalController extends Controller
                 return $this->redirectToRoute('documents_journal_index');
             }
 
-            return $this->redirectToRoute('documents_journal_edit', array('id' => $journal->getId()));
+            return $this->redirectToRoute('documents_journal_edit', ['id' => $journal->getId()]);
         }
 
         return $this->renderEditForm($journal, $editForm, $deleteForm);
@@ -140,6 +194,11 @@ class JournalController extends Controller
      *
      * @Route("/{id}", name="documents_journal_delete")
      * @Method("DELETE")
+     *
+     * @param Request $request
+     * @param Journal $documents_journal
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, Journal $documents_journal)
     {
@@ -160,12 +219,12 @@ class JournalController extends Controller
      *
      * @param Journal $documents_journal The Documents\Journal entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createDeleteForm(Journal $documents_journal)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('documents_journal_delete', array('id' => $documents_journal->getId())))
+            ->setAction($this->generateUrl('documents_journal_delete', ['id' => $documents_journal->getId()]))
             ->setMethod('DELETE')
             ->getForm()
         ;
@@ -173,17 +232,18 @@ class JournalController extends Controller
 
     /**
      * @param Journal $documents_journal
-     * @param $editForm
-     * @param $deleteForm
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Form $editForm
+     * @param Form $deleteForm
+     *
+     * @return Response
      */
-    protected function renderEditForm(Journal $documents_journal, $editForm, $deleteForm)
+    protected function renderEditForm(Journal $documents_journal, Form $editForm, Form $deleteForm)
     {
-        return $this->render('documents/journal/edit.html.twig', array(
+        return $this->render('documents/journal/edit.html.twig', [
             'documents_journal' => $documents_journal,
             'edit_form'         => $editForm->createView(),
             'delete_form'       => $deleteForm->createView(),
-        ));
+        ]);
     }
 }

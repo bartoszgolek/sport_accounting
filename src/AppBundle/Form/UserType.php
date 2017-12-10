@@ -2,7 +2,8 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Player;
+use AppBundle\Entity\Member;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -20,8 +21,8 @@ class UserType extends AbstractType
         $builder
             ->add('username')
             ->add('email')
-            ->add('player', EntityType::class, array(
-                'class' => Player::class,
+            ->add('member', EntityType::class, [
+                'class' => Member::class,
                 'query_builder' => function(EntityRepository $er) use($options) {
                     return $er->createQueryBuilder('p')
                         ->orderBy('p.name', 'ASC');
@@ -30,7 +31,7 @@ class UserType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'placeholder' => ""
-            ))
+            ])
         ;
     }
     
@@ -39,8 +40,8 @@ class UserType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\User'
-        ));
+        $resolver->setDefaults([
+            'data_class' => User::class
+        ]);
     }
 }

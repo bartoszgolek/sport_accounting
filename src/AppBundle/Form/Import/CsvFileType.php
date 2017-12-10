@@ -34,10 +34,10 @@ class CsvFileType extends AbstractType
             ->add('fieldSeparator', FieldSeparatorType::class)
             ->add('lineSeparator', LineSeparatorType::class)
             ->add('skip', IntegerType::class)
-            ->add('hasHeaderRow', CheckboxType::class, array(
+            ->add('hasHeaderRow', CheckboxType::class, [
                 'required' => false
-            ))
-            ->add('upload', SubmitType::class)
+            ])
+            ->add('process', SubmitType::class)
         ;
     }
 
@@ -46,8 +46,8 @@ class CsvFileType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => CsvFile::class
-        ));
+        ]);
     }
 }

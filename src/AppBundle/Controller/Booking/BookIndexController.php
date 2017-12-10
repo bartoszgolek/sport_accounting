@@ -8,60 +8,96 @@ use AppBundle\Entity\Booking\TransactionFilter;
 use AppBundle\Form\Booking\AccountsFilterType;
 use AppBundle\Form\Booking\BookTypes;
 use AppBundle\Form\Booking\TransactionFilterType;
+use AppBundle\Repository\Booking\BookRepository;
+use AppBundle\Repository\Booking\TransactionRepository;
+use AppBundle\Utils\Form;
+use AppBundle\Utils\Redirect;
+use AppBundle\Utils\View;
+use Symfony\Component\Form\ClickableInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Booking\Book;
 use AppBundle\Form\Booking\BookType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Booking\Book controller.
- *
- * @Route("/booking_book")
+ * @Route("/booking/book", service="AppBundle\Controller\Booking\BookIndexController")
  */
-class BookController extends Controller
+class BookIndexController
 {
+    /** @var BookRepository */
+    private $bookRepository;
+
+    /** @var TransactionRepository */
+    private $transactionRepository;
+
+    /** @var Form */
+    private $form;
+
+    /** @var View */
+    private $view;
+
+    /** @var Redirect */
+    private $redirect;
+
     /**
-     * Lists all Booking\Book entities.
-     *
-     * @Route("/", name="booking_book_index")
-     * @Method("GET")
+     * @param BookRepository $bookRepository
+     * @param TransactionRepository $transactionRepository
+     * @param Form $form
+     * @param View $view
      */
-    public function indexAction()
+    public function __construct(
+        BookRepository $bookRepository,
+        TransactionRepository $transactionRepository,
+        Form $form,
+        View $view)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $booking_books = $em->getRepository('AppBundle:Booking\Book')->findAll();
-
-        return $this->render('booking/book/index.html.twig', array(
-            'booking_books' => $booking_books,
-            'book_types' => BookTypes::getArray()
-        ));
+        $this->bookRepository = $bookRepository;
+        $this->transactionRepository = $transactionRepository;
+        $this->form = $form;
+        $this->view = $view;
     }
 
     /**
-     * Lists all Booking\Book entities.
-     *
-     * @Route("/balancereport", name="booking_book_balanceReport")
+     * @Route("/", name="booking_book_index")
+     * @Method("GET")
+     */
+    public function indexAction(): Response
+    {
+        $booking_books = $this->bookRepository->findAll();
+
+        return $this->view->render('booking/book/index.html.twig', [
+            'booking_books' => $booking_books,
+            'book_types' => BookTypes::getArray()
+        ]);
+    }
+
+    /**
+     * @Route("/balance_report", name="booking_book_balanceReport")
      * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function balanceReportAction(Request $request)
     {
         $filter = new AccountsFilter();
-        $filterForm = $this->createForm(AccountsFilterType::class, $filter);
-        $filterForm->handleRequest($request);
+        $filterForm = $this->form->create(AccountsFilterType::class, $request, $filter);
 
         if ($filterForm->isSubmitted() && $filterForm->isValid()) {
-            if ($filterForm->get('reset')->isClicked()) {
+            /** @var ClickableInterface $resetButton */
+            $resetButton = $filterForm->get('reset');
+            if ($resetButton->isClicked()) {
                 $filter = new AccountsFilter();
-                $filterForm = $this->createForm(AccountsFilterType::class, $filter);
+                $filterForm = $this->form->createEmpty(AccountsFilterType::class, $filter);
             }
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $bookRepository = $em->getRepository(Book::class);
-        $books = $bookRepository
+        $books = $this->bookRepository
             ->createQueryBuilder('b')
             ->join("b.transactions", "t")
             ->where(":type <= b.type")
@@ -79,61 +115,64 @@ class BookController extends Controller
             ->getQuery()
             ->execute();
 
-        return $this->render('booking/book/balanceReport.html.twig', array(
+        return $this->view->render('booking/book/balanceReport.html.twig', [
             'booking_books' => $books,
             'filter_form' => $filterForm->createView(),
             'book_types' => BookTypes::getArray()
-        ));
+        ]);
     }
 
     /**
-     * Creates a new Booking\Book entity.
-     *
      * @Route("/new", name="booking_book_new")
      * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
         $booking_book = new Book();
-        $form = $this->createForm(BookType::class, $booking_book);
-        $form->handleRequest($request);
+        $form = $this->form->create(BookType::class, $request, $booking_book);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($booking_book);
-            $em->flush();
+            $this->bookRepository->save($booking_book);
 
-            return $this->redirectToRoute('booking_book_show', array('id' => $booking_book->getId()));
+
+            return $this->redirect->toRoute('booking_book_show', ['id' => $booking_book->getId()]);
         }
 
-        return $this->render('booking/book/new.html.twig', array(
+        return $this->view->render('booking/book/new.html.twig', [
             'booking_book' => $booking_book,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
-     * Finds and displays a Booking\Book entity.
-     *
      * @Route("/{id}", name="booking_book_show")
      * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param Book $book
+     *
+     * @return Response
      */
     public function showAction(Request $request, Book $book)
     {
         $filter = new TransactionFilter();
-        $filterForm = $this->createForm(TransactionFilterType::class, $filter);
-        $filterForm->handleRequest($request);
+        $filterForm = $this->form->create(TransactionFilterType::class, $request, $filter);
 
         if ($filterForm->isSubmitted() && $filterForm->isValid()) {
-            if ($filterForm->get('reset')->isClicked()) {
+            /** @var ClickableInterface $resetButton */
+            $resetButton = $filterForm->get('reset');
+            if ($resetButton->isClicked()) {
                 $filter = new TransactionFilter();
-                $filterForm = $this->createForm(TransactionFilterType::class, $filter);
+                $filterForm = $this->form->createEmpty(TransactionFilterType::class, $filter);
             }
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $transactionRepository = $em->getRepository(Transaction::class);
-        $transactions = $transactionRepository
+        /** @var Transaction[] $transactions */
+        $transactions = $this->transactionRepository
             ->createQueryBuilder('t')
             ->where(":from_date <= t.date")
             ->andWhere(":to_date >= t.date")
@@ -145,12 +184,16 @@ class BookController extends Controller
             ->getQuery()
             ->execute();
 
-        $saldo = $transactionRepository
+        $debit_sum_before = 0;
+        $credit_sum_before = 0;
+        $value_sum_before = 0;
+
+        $balance = $this->transactionRepository
             ->createQueryBuilder('t')
-            ->select(array(
+            ->select([
                 'debit' => 'SUM(t.debit)',
                 'credit' => 'SUM(t.credit)',
-            ))
+            ])
             ->where(":from_date > t.date")
             ->andWhere(":book_id = t.book")
             ->groupBy("t.book")
@@ -159,29 +202,24 @@ class BookController extends Controller
             ->getQuery()
             ->execute();
 
-        if (count($saldo) > 0) {
-            $debit_sum_before = $saldo[0][1];
-            $credit_sum_before = $saldo[0][2];
+        if (count($balance) > 0) {
+            $debit_sum_before = $balance[0][1];
+            $credit_sum_before = $balance[0][2];
             $value_sum_before = (-1 * $debit_sum_before) + $credit_sum_before;
-        } else {
-            $debit_sum_before = 0;
-            $credit_sum_before = 0;
-            $value_sum_before = 0;
         }
 
         $debit_sum_after = $debit_sum_before;
         $credit_sum_after = $credit_sum_before;
         $value_sum_after = $value_sum_before;
         foreach ($transactions as $transaction){
-            $debit_sum_after += $transaction->getDebit();
-            $credit_sum_after += $transaction->getCredit();
-            $value_sum_after += $transaction->getValue();
+            $debit_sum_after += (float)$transaction->getDebit();
+            $credit_sum_after += (float)$transaction->getCredit();
+            $value_sum_after += (float)$transaction->getValue();
         }
 
-        return $this->render('booking/my_book/show.html.twig', array(
+        return $this->view->render('booking/my_book/show.html.twig', [
             'book' => $book,
             'transactions' => $transactions,
-            'saldo' => $saldo,
             'filter_form' => $filterForm->createView(),
             'credit_sum_after' => sprintf("%20.2f", $credit_sum_after),
             'debit_sum_after' => sprintf("%20.2f", $debit_sum_after),
@@ -189,69 +227,62 @@ class BookController extends Controller
             'credit_sum_before' => sprintf("%20.2f", $credit_sum_before),
             'debit_sum_before' => sprintf("%20.2f", $debit_sum_before),
             'value_sum_before' => sprintf("%20.2f", $value_sum_before),
-        ));
+        ]);
     }
 
     /**
-     * Displays a form to edit an existing Booking\Book entity.
-     *
      * @Route("/{id}/edit", name="booking_book_edit")
      * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param Book $book
+     *
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Book $book)
     {
         $deleteForm = $this->createDeleteForm($book);
-        $editForm = $this->createForm(BookType::class, $book);
-        $editForm->handleRequest($request);
+        $editForm = $this->form->create(BookType::class, $request, $book);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($book);
-            $em->flush();
+            $this->bookRepository->save($book);
 
-            return $this->redirectToRoute('booking_book_edit', array('id' => $book->getId()));
+            return $this->redirect->toRoute('booking_book_edit', ['id' => $book->getId()]);
         }
 
-        return $this->render('booking/book/edit.html.twig', array(
+        return $this->view->render('booking/book/edit.html.twig', [
             'booking_book' => $book,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
-     * Deletes a Booking\Book entity.
-     *
      * @Route("/{id}", name="booking_book_delete")
      * @Method("DELETE")
+     *
+     * @param Book $book
+     *
+     * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Book $book)
+    public function deleteAction(Book $book)
     {
         $form = $this->createDeleteForm($book);
-        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($book);
-            $em->flush();
+            $this->bookRepository->delete($book);
         }
 
-        return $this->redirectToRoute('booking_book_index');
+        return $this->redirect->toRoute('booking_book_index');
     }
 
     /**
-     * Creates a form to delete a Booking\Book entity.
+     * @param Book $booking_book
      *
-     * @param Book $booking_book The Booking\Book entity
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @return FormInterface
      */
     private function createDeleteForm(Book $booking_book)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('booking_book_delete', array('id' => $booking_book->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        return $this->form->createDelete('booking_book_delete', ['id' => $booking_book->getId()]);
     }
 }

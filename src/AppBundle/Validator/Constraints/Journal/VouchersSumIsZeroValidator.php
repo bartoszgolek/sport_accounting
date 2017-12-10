@@ -1,6 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
  * User: Bartosz Gołek
  * Date: 2016-04-15
  * Time: 11:10
@@ -9,6 +8,7 @@
 namespace AppBundle\Validator\Constraints\Journal;
 
 
+use AppBundle\Entity\Documents\Journal;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -16,6 +16,10 @@ class VouchersSumIsZeroValidator extends ConstraintValidator
 {
     public function validate($journal, Constraint $constraint)
     {
+        /**
+         * @var Journal           $journal
+         * @var VouchersSumIsZero $constraint
+         */
         $vouchers = [];
         foreach ($journal->getPositions() as $position)
         {

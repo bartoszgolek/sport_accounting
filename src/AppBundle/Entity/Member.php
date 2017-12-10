@@ -6,12 +6,12 @@ use AppBundle\Entity\Booking\Book;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Player
+ * Member
  *
- * @ORM\Table(name="player")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\PlayerRepository")
+ * @ORM\Table(name="member")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\MemberRepository")
  */
-class Player
+class Member
 {
     /**
      * @var int
@@ -30,7 +30,7 @@ class Player
     private $name;
 
     /**
-     * @var int
+     * @var Book
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Booking\Book")
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
@@ -53,7 +53,7 @@ class Player
      *
      * @param string $name
      *
-     * @return Player
+     * @return $this
      */
     public function setName($name)
     {
@@ -77,7 +77,7 @@ class Player
      *
      * @param Book $book
      *
-     * @return User
+     * @return $this
      */
     public function setBook(Book $book = null)
     {

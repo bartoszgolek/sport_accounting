@@ -1,144 +1,153 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Bartosz Gołek
- * Date: 2016-04-19
- * Time: 09:29
- */
-
 namespace AppBundle\Entity\Import;
 
 
 class BankData
 {
-    /** @var  string */
-    private $bank_account;
+    /** @var  int */
+    private $bank_account_column;
 
-    /** @var  string */
-    private $commit_date;
-
-    /**
-     * @var string
-     */
-    private $transaction_date;
+    /** @var  int */
+    private $commit_date_column;
 
     /**
-     * @var string
+     * @var int
      */
-    private $title;
+    private $transaction_date_column;
 
     /**
-     * @var  string
+     * @var int
      */
-    private $account;
+    private $title_column;
 
     /**
-     * @var  string
+     * @var  int
      */
-    private $account_number;
+    private $account_name_column;
 
     /**
-     * @var  string
+     * @var  int
      */
-    private $amount;
+    private $account_number_column;
+
+    /**
+     * @var  int
+     */
+    private $amount_column;
 
     /** @var string */
     private $journal_description_template = '{Title}, {Account}';
 
     /**
-     * @return string
+     * @return int
      */
-    public function getCommitDate()
+    public function getCommitDateColumn()
     {
-        return $this->commit_date;
+        return $this->commit_date_column;
     }
 
     /**
-     * @param string $commit_date
+     * @param int $commit_date_column
      */
-    public function setCommitDate($commit_date)
+    public function setCommitDateColumn($commit_date_column)
     {
-        $this->commit_date = $commit_date;
+        $this->commit_date_column = $commit_date_column;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getTransactionDate()
+    public function getTransactionDateColumn()
     {
-        return $this->transaction_date;
+        return $this->transaction_date_column;
     }
 
     /**
-     * @param string $transaction_date
+     * @param int $transaction_date_column
      */
-    public function setTransactionDate($transaction_date)
+    public function setTransactionDateColumn($transaction_date_column)
     {
-        $this->transaction_date = $transaction_date;
+        $this->transaction_date_column = $transaction_date_column;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getTitle()
+    public function getTitleColumn()
     {
-        return $this->title;
+        return $this->title_column;
     }
 
     /**
-     * @param string $title
+     * @param int $title_column
      */
-    public function setTitle($title)
+    public function setTitleColumn($title_column)
     {
-        $this->title = $title;
+        $this->title_column = $title_column;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getAccount()
+    public function getAccountNameColumn()
     {
-        return $this->account;
+        return $this->account_name_column;
     }
 
     /**
-     * @param string $account
+     * @param int $account_name_column
      */
-    public function setAccount($account)
+    public function setAccountNameColumn($account_name_column)
     {
-        $this->account = $account;
+        $this->account_name_column = $account_name_column;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getAccountNumber()
+    public function getAccountNumberColumn()
     {
-        return $this->account_number;
+        return $this->account_number_column;
     }
 
     /**
-     * @param string $account_number
+     * @param int $account_number_column
      */
-    public function setAccountNumber($account_number)
+    public function setAccountNumberColumn($account_number_column)
     {
-        $this->account_number = $account_number;
+        $this->account_number_column = $account_number_column;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getAmount()
+    public function getAmountColumn()
     {
-        return $this->amount;
+        return $this->amount_column;
     }
 
     /**
-     * @param string $amount
+     * @param int $amount_column
      */
-    public function setAmount($amount)
+    public function setAmountColumn($amount_column)
     {
-        $this->amount = $amount;
+        $this->amount_column = $amount_column;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBankAccountColumn()
+    {
+        return $this->bank_account_column;
+    }
+
+    /**
+     * @param int $bank_account_column
+     */
+    public function setBankAccountColumn($bank_account_column)
+    {
+        $this->bank_account_column = $bank_account_column;
     }
 
     /**
@@ -155,21 +164,5 @@ class BankData
     public function setJournalDescriptionTemplate($journal_description_template)
     {
         $this->journal_description_template = $journal_description_template;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBankAccount()
-    {
-        return $this->bank_account;
-    }
-
-    /**
-     * @param string $bank_account
-     */
-    public function setBankAccount($bank_account)
-    {
-        $this->bank_account = $bank_account;
     }
 }

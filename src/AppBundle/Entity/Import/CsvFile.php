@@ -8,8 +8,6 @@
 
 namespace AppBundle\Entity\Import;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
 
 class CsvFile
 {

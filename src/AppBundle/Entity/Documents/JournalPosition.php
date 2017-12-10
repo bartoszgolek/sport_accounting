@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Documents;
 
+use AppBundle\Entity\Booking\Book;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,7 +23,7 @@ class JournalPosition
     private $id;
 
     /**
-     * @var int
+     * @var Journal
      *
      * @ORM\ManyToOne(targetEntity="Journal", inversedBy="positions")
      * @ORM\JoinColumn(name="journal_id", referencedColumnName="id")
@@ -51,7 +52,7 @@ class JournalPosition
     private $credit;
 
     /**
-     * @var int
+     * @var Book
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Booking\Book")
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
@@ -243,11 +244,11 @@ class JournalPosition
     /**
      * Set book
      *
-     * @param \AppBundle\Entity\Booking\Book $book
+     * @param Book $book
      *
-     * @return JournalPosition
+     * @return $this
      */
-    public function setBook(\AppBundle\Entity\Booking\Book $book = null)
+    public function setBook(Book $book = null)
     {
         $this->book = $book;
 
@@ -257,7 +258,7 @@ class JournalPosition
     /**
      * Get book
      *
-     * @return \AppBundle\Entity\Booking\Book
+     * @return Book
      */
     public function getBook()
     {

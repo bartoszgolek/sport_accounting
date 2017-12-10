@@ -7,10 +7,8 @@
         <a class="btn btn-default" href="{{ path('documents_journal_index') }}">Back to the list</a>
     </div>
 
-    <div class="col-md-3 col-md-offset-4">
-        {{ form_start(form) }}
-            {{ form_widget(form) }}
-        {{ form_end(form) }}
-    </div>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
 
 {% endblock %}

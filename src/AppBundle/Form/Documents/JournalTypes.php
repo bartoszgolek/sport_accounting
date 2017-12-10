@@ -1,18 +1,6 @@
 <?php
-    /**
-     * Created by PhpStorm.
-     * User: bg
-     * Date: 06.04.16
-     * Time: 22:23
-     */
-
     namespace AppBundle\Form\Documents;
 
-    /**
-     *
-     * @license MIT
-     * @author Bartosz Gołek <bartosz.golek@gmail.com>
-     **/
     class JournalTypes
     {
         const BASIC = 0;
@@ -27,8 +15,8 @@
 
         static function getArray()
         {
-            return array(
+            return [
                 self::BASIC => self::BASIC_NAME
-            );
+            ];
         }
     }

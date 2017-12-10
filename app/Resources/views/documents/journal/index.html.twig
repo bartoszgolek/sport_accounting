@@ -3,7 +3,10 @@
 {% block body %}
     <h1>Journal list</h1>
 
-    <a class="btn btn-default" href="{{ path('documents_journal_new') }}">Create a new entry</a>
+    <div>
+        <a class="btn btn-default" href="{{ path('documents_journal_new') }}">Create new</a>
+        <a class="btn btn-default" href="{{ path('upload_csv_file') }}">Import CSV File</a>
+    </div>
 
     <table class="table table-striped table-hover">
         <thead>

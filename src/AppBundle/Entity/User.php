@@ -1,13 +1,12 @@
 <?php
     namespace AppBundle\Entity;
 
-    use AppBundle\Entity\Player;
     use FOS\UserBundle\Model\User as BaseUser;
     use Doctrine\ORM\Mapping as ORM;
 
     /**
-     * @ORM\Entity
      * @ORM\Table(name="fos_user")
+     * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
      */
     class User extends BaseUser
     {
@@ -24,34 +23,34 @@
         }
 
         /**
-         * @var int
+         * @var Member
          *
-         * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Player")
-         * @ORM\JoinColumn(name="player_id", referencedColumnName="id")
+         * @ORM\ManyToOne(targetEntity="Member")
+         * @ORM\JoinColumn(name="member_id", referencedColumnName="id")
          */
-        private $player;
+        private $member;
 
         /**
-         * Set player
+         * Set member
          *
-         * @param Player $player
+         * @param Member $member
          *
-         * @return User
+         * @return $this
          */
-        public function setPlayer(Player $player = null)
+        public function setMember(Member $member = null)
         {
-            $this->player = $player;
+            $this->member = $member;
 
             return $this;
         }
 
         /**
-         * Get player
+         * Get member
          *
-         * @return Player
+         * @return Member
          */
-        public function getPlayer()
+        public function getMember()
         {
-            return $this->player;
+            return $this->member;
         }
     }

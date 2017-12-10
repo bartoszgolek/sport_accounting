@@ -57,7 +57,7 @@ class Book
      *
      * @param string $description
      *
-     * @return Book
+     * @return $this
      */
     public function setDescription($description)
     {
@@ -81,7 +81,7 @@ class Book
      *
      * @param integer $type
      *
-     * @return Book
+     * @return $this
      */
     public function setType($type)
     {
@@ -108,11 +108,11 @@ class Book
     /**
      * Add transaction
      *
-     * @param \AppBundle\Entity\Booking\Transaction $transaction
+     * @param Transaction $transaction
      *
-     * @return Book
+     * @return $this
      */
-    public function addTransaction(\AppBundle\Entity\Booking\Transaction $transaction)
+    public function addTransaction(Transaction $transaction)
     {
         $this->transactions[] = $transaction;
 
@@ -122,9 +122,9 @@ class Book
     /**
      * Remove transaction
      *
-     * @param \AppBundle\Entity\Booking\Transaction $transaction
+     * @param Transaction $transaction
      */
-    public function removeTransaction(\AppBundle\Entity\Booking\Transaction $transaction)
+    public function removeTransaction(Transaction $transaction)
     {
         $this->transactions->removeElement($transaction);
     }

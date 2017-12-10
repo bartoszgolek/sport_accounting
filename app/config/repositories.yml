@@ -1,0 +1,30 @@
+services:
+  AppBundle\Repository\MemberRepository:
+    factory: 'Doctrine\ORM\EntityManagerInterface:getRepository'
+    arguments:
+        - AppBundle\Entity\Member
+
+  AppBundle\Repository\UserRepository:
+    factory: 'Doctrine\ORM\EntityManagerInterface:getRepository'
+    arguments:
+        - AppBundle\Entity\User
+
+  AppBundle\Repository\Booking\BookRepository:
+    factory: 'Doctrine\ORM\EntityManagerInterface:getRepository'
+    arguments:
+        - AppBundle\Entity\Booking\Book
+
+  AppBundle\Repository\Booking\TransactionRepository:
+    factory: 'Doctrine\ORM\EntityManagerInterface:getRepository'
+    arguments:
+        - AppBundle\Entity\Booking\Transaction
+
+  AppBundle\Repository\Documents\JournalRepository:
+    factory: 'Doctrine\ORM\EntityManagerInterface:getRepository'
+    arguments:
+        - AppBundle\Entity\Documents\Journal
+
+  AppBundle\Repository\Documents\JournalPositionRepository:
+    factory: 'Doctrine\ORM\EntityManagerInterface:getRepository'
+    arguments:
+        - AppBundle\Entity\Documents\JournalPosition

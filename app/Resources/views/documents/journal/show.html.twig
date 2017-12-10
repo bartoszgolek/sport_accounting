@@ -57,7 +57,7 @@
                 <td>{{ position.id }}</td>
                 <td>{{ position.voucher }}</td>
                 <td>{{ position.date|date }}</td>
-                <td>{{ position.book.description }}</td>
+                <td>{% if position.book != null %}{{ position.book.description }}{% endif %}</td>
                 <td>{{ position.description }}</td>
                 <td>{{ position.debit }}</td>
                 <td>{{ position.credit }}</td>
