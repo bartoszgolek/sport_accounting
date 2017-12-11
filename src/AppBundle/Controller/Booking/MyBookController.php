@@ -20,7 +20,7 @@
     use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
     /**
-     * @Route("/booking", service="AppBundle\Controller\Booking\MyBookController")
+     * @Route("/", service="AppBundle\Controller\Booking\MyBookController")
      */
     class MyBookController
     {

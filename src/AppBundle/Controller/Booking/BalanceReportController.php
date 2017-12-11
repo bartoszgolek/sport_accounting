@@ -15,7 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/booking", service="AppBundle\Controller\Booking\BalanceReportController")
+ * @Route("/", service="AppBundle\Controller\Booking\BalanceReportController")
  */
 class BalanceReportController
 {

@@ -15,7 +15,7 @@ use AppBundle\Form\Booking\BookType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/booking/book", service="AppBundle\Controller\Booking\EditBookController")
+ * @Route("/book", service="AppBundle\Controller\Booking\EditBookController")
  */
 class EditBookController
 {

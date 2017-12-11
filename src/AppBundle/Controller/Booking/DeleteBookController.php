@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Booking\Book;
 
 /**
- * @Route("/booking/book", service="AppBundle\Controller\Booking\DeleteBookController")
+ * @Route("/book", service="AppBundle\Controller\Booking\DeleteBookController")
  */
 class DeleteBookController
 {

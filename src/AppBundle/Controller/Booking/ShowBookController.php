@@ -17,9 +17,9 @@ use AppBundle\Entity\Booking\Book;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/booking/book", service="AppBundle\Controller\Booking\BookShowController")
+ * @Route("/book", service="AppBundle\Controller\Booking\ShowBookController")
  */
-class BookShowController
+class ShowBookController
 {
     /** @var TransactionRepository */
     private $transactionRepository;

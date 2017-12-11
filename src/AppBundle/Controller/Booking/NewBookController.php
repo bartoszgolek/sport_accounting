@@ -14,12 +14,13 @@ use AppBundle\Form\Booking\BookType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/booking/book", service="AppBundle\Controller\Booking\NewBookController")
+ * @Route("/book", service="AppBundle\Controller\Booking\NewBookController")
  */
 class NewBookController
 {
     /** @var BookRepository */
     private $bookRepository;
+
     /** @var Form */
     private $form;
 
@@ -57,18 +58,18 @@ class NewBookController
      */
     public function newAction(Request $request): Response
     {
-        $booking_book = new Book();
-        $form = $this->form->create(BookType::class, $request, $booking_book);
+        $book = new Book();
+        $form = $this->form->create(BookType::class, $request, $book);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->bookRepository->save($booking_book);
+            $this->bookRepository->save($book);
 
 
-            return $this->redirect->toRoute('booking_book_show', ['id' => $booking_book->getId()]);
+            return $this->redirect->toRoute('booking_book_show', ['id' => $book->getId()]);
         }
 
         return $this->view->render('booking/book/new.html.twig', [
-            'booking_book' => $booking_book,
+            'book' => $book,
             'form' => $form->createView(),
         ]);
     }

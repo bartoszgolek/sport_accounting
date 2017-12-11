@@ -24,9 +24,9 @@ use AppBundle\Form\Booking\BookType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/booking/book", service="AppBundle\Controller\Booking\BookIndexController")
+ * @Route("/book", service="AppBundle\Controller\Booking\IndexBookController")
  */
-class BookIndexController
+class IndexBookController
 {
     /** @var BookRepository */
     private $bookRepository;
