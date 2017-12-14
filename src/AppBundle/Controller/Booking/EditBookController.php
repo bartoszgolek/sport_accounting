@@ -60,7 +60,7 @@ class EditBookController
      */
     public function editAction(Request $request, Book $book): Response
     {
-        $deleteForm = $this->createDeleteForm($book);
+        $deleteForm = $this->form->createDelete('booking_book_delete', $book->getId());
         $editForm = $this->form->create(BookType::class, $request, $book);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -74,15 +74,5 @@ class EditBookController
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ]);
-    }
-
-    /**
-     * @param Book $booking_book
-     *
-     * @return FormInterface
-     */
-    private function createDeleteForm(Book $booking_book)
-    {
-        return $this->form->createDelete('booking_book_delete', $booking_book->getId());
     }
 }

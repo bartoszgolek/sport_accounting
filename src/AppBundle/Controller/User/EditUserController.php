@@ -15,7 +15,7 @@ use AppBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/user", service="AppBundle\Controller\User\EditUserController")
+ * @Route("/user", service="EditTagController")
  */
 class EditUserController
 {
@@ -57,7 +57,7 @@ class EditUserController
      */
     public function editAction(Request $request, User $user): Response
     {
-        $deleteForm = $this->createDeleteForm($user);
+        $deleteForm = $this->form->createDelete('user_delete', $user->getId());
         $editForm = $this->form->create(UserType::class, $request, $user);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -71,15 +71,5 @@ class EditUserController
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ]);
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return FormInterface
-     */
-    private function createDeleteForm(User $user): FormInterface
-    {
-        return $this->form->createDelete('user_delete', $user->getId());
     }
 }

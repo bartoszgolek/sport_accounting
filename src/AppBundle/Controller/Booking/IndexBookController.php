@@ -267,22 +267,12 @@ class IndexBookController
      */
     public function deleteAction(Book $book)
     {
-        $form = $this->createDeleteForm($book);
+        $form = $this->form->createDelete('booking_book_delete', $book->getId());
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->bookRepository->delete($book);
         }
 
         return $this->redirect->toRoute('booking_book_index');
-    }
-
-    /**
-     * @param Book $booking_book
-     *
-     * @return FormInterface
-     */
-    private function createDeleteForm(Book $booking_book)
-    {
-        return $this->form->createDelete('booking_book_delete', ['id' => $booking_book->getId()]);
     }
 }

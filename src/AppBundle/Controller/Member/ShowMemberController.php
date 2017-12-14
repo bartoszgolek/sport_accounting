@@ -32,7 +32,7 @@ class ShowMemberController
     }
 
     /**
-     * @Route("/{id}", name="member_show")
+     * @Route("/{id}/show", name="member_show")
      * @Method("GET")
      *
      * @param Member $member
@@ -41,21 +41,11 @@ class ShowMemberController
      */
     public function showAction(Member $member): Response
     {
-        $deleteForm = $this->createDeleteForm($member);
+        $deleteForm = $this->form->createDelete('member_delete', $member->getId());
 
         return $this->view->render('member/show.html.twig', [
             'member' => $member,
             'delete_form' => $deleteForm->createView(),
         ]);
-    }
-
-    /**
-     * @param Member $member
-     *
-     * @return FormInterface
-     */
-    private function createDeleteForm(Member $member): FormInterface
-    {
-        return $this->form->createDelete('member_delete', $member->getId());
     }
 }

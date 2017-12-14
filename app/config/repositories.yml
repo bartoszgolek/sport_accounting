@@ -9,6 +9,11 @@ services:
     arguments:
         - AppBundle\Entity\User
 
+  AppBundle\Repository\TagRepository:
+    factory: 'Doctrine\ORM\EntityManagerInterface:getRepository'
+    arguments:
+        - AppBundle\Entity\Tag
+
   AppBundle\Repository\Booking\BookRepository:
     factory: 'Doctrine\ORM\EntityManagerInterface:getRepository'
     arguments:

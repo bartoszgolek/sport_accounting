@@ -1,24 +1,24 @@
 <?php
 
-namespace AppBundle\Controller\User;
+namespace AppBundle\Controller\Tag;
 
-use AppBundle\Repository\UserRepository;
+use AppBundle\Repository\TagRepository;
 use AppBundle\Utils\Form;
 use AppBundle\Utils\Redirect;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use AppBundle\Entity\User;
+use AppBundle\Entity\Tag;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/user", service="DeleteTagController")
+ * @Route("/tag", service="AppBundle\Controller\Tag\DeleteTagController")
  */
-class DeleteUserController
+class DeleteTagController
 {
-    /** @var UserRepository */
-    private $userRepository;
+    /** @var TagRepository */
+    private $tagRepository;
 
     /** @var Redirect */
     private $redirect;
@@ -27,37 +27,36 @@ class DeleteUserController
     private $form;
 
     /**
-     * DeleteUserController constructor.
-     * @param UserRepository $userRepository
+     * @param TagRepository $tagRepository
      * @param Redirect $redirect
      * @param Form $form
      */
-    public function __construct(UserRepository $userRepository, Redirect $redirect, Form $form)
+    public function __construct(TagRepository $tagRepository, Redirect $redirect, Form $form)
     {
-        $this->userRepository = $userRepository;
+        $this->tagRepository = $tagRepository;
         $this->redirect = $redirect;
         $this->form = $form;
     }
 
 
     /**
-     * @Route("/{id}", name="user_delete")
+     * @Route("/{id}", name="tag_delete")
      * @Method("DELETE")
      *
      * @param Request $request
-     * @param User $user
+     * @param Tag $tag
      *
      * @return Response
      */
-    public function deleteAction(Request $request, User $user): Response
+    public function deleteAction(Request $request, Tag $tag): Response
     {
-        $form = $this->form->createDelete('user_delete', $user->getId());
+        $form = $this->form->createDelete('tag_delete', $tag->getId());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->userRepository->delete($user);
+            $this->tagRepository->delete($tag);
         }
 
-        return $this->redirect->toRoute('user_index');
+        return $this->redirect->toRoute('tag_index');
     }
 }

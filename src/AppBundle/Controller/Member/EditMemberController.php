@@ -57,7 +57,7 @@ class EditMemberController
      */
     public function editAction(Request $request, Member $member)
     {
-        $deleteForm = $this->createDeleteForm($member);
+        $deleteForm = $this->form->createDelete('member_delete', $member->getId());
         $editForm = $this->form->create(MemberType::class, $request, $member);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -71,15 +71,5 @@ class EditMemberController
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ]);
-    }
-
-    /**
-     * @param Member $member
-     *
-     * @return FormInterface
-     */
-    private function createDeleteForm(Member $member): FormInterface
-    {
-        return $this->form->createDelete('member_delete', $member->getId());
     }
 }

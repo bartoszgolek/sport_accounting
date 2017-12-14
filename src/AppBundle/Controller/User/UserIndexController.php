@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/user", service="AppBundle\Controller\User\UserIndexController")
+ * @Route("/user", service="IndexTagController")
  */
 class UserIndexController
 {

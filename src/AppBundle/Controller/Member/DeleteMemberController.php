@@ -49,7 +49,7 @@ class DeleteMemberController
      */
     public function deleteAction(Request $request, Member $member): Response
     {
-        $form = $this->createDeleteForm($member);
+        $form = $this->form->createDelete('member_delete', $member->getId());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -57,15 +57,5 @@ class DeleteMemberController
         }
 
         return $this->redirect->toRoute('member_index');
-    }
-
-    /**
-     * @param Member $member
-     *
-     * @return FormInterface
-     */
-    private function createDeleteForm(Member $member): FormInterface
-    {
-        return $this->form->createDelete('member_delete', $member->getId());
     }
 }

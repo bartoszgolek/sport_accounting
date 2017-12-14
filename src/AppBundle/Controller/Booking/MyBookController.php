@@ -80,6 +80,6 @@
                 return $this->view->render('booking/my_book/no_book.html.twig');
             }
 
-            return $this->forwarder->forward('AppBundle\Controller\Booking\BookShowController::showAction', ['book' => $book]);
+            return $this->forwarder->forward('AppBundle\Controller\Booking\ShowBookController::showAction', ['book' => $book]);
         }
     }

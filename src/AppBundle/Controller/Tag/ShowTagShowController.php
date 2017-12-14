@@ -1,19 +1,19 @@
 <?php
 
-namespace AppBundle\Controller\User;
+namespace AppBundle\Controller\Tag;
 
 use AppBundle\Utils\Form;
 use AppBundle\Utils\View;
 use Symfony\Component\Form\FormInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use AppBundle\Entity\User;
+use AppBundle\Entity\Tag;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/user", service="ShowTagShowController")
+ * @Route("/tag", service="AppBundle\Controller\Tag\ShowTagShowController")
  */
-class UserShowController
+class ShowTagShowController
 {
     /** @var View */
     private $view;
@@ -32,19 +32,19 @@ class UserShowController
     }
 
     /**
-     * @Route("/{id}", name="user_show")
+     * @Route("/{id}", name="tag_show")
      * @Method("GET")
      *
-     * @param User $user
+     * @param Tag $tag
      *
      * @return Response
      */
-    public function showAction(User $user)
+    public function showAction(Tag $tag)
     {
-        $deleteForm = $this->form->createDelete('user_delete', $user->getId());
+        $deleteForm = $this->form->createDelete('tag_delete', $tag->getId());
 
-        return $this->view->render('user/show.html.twig', [
-            'user' => $user,
+        return $this->view->render('tag/show.html.twig', [
+            'tag' => $tag,
             'delete_form' => $deleteForm->createView(),
         ]);
     }

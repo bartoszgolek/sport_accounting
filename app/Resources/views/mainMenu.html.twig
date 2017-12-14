@@ -4,6 +4,7 @@
                         {% endif %}
                         {% if is_granted("ROLE_MANAGER") %}
                         <li><a href="{{ path('member_index') }}">Members</a></li>
+                        <li><a href="{{ path('tag_index') }}">Tags</a></li>
                         <li><a href="{{ path('documents_journal_index') }}">Journals</a></li>
                         {% endif %}
                         {% if is_granted("ROLE_ADMIN") %}

@@ -1,28 +1,28 @@
 <?php
 
-namespace AppBundle\Controller\Member;
+namespace AppBundle\Controller\Tag;
 
-use AppBundle\Repository\MemberRepository;
+use AppBundle\Repository\TagRepository;
 use AppBundle\Utils\Form;
 use AppBundle\Utils\Redirect;
 use AppBundle\Utils\View;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use AppBundle\Entity\Member;
-use AppBundle\Form\MemberType;
+use AppBundle\Entity\Tag;
+use AppBundle\Form\TagType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/member", service="NewTagController")
+ * @Route("/tag", service="AppBundle\Controller\Tag\NewTagController")
  */
-class NewMemberController
+class NewTagController
 {
     /** @var Form */
     private $form;
 
-    /** @var MemberRepository */
-    private $memberRepository;
+    /** @var TagRepository */
+    private $tagRepository;
 
     /** @var Redirect */
     private $redirect;
@@ -32,20 +32,20 @@ class NewMemberController
 
     /**
      * @param Form $form
-     * @param MemberRepository $memberRepository
+     * @param TagRepository $tagRepository
      * @param Redirect $redirect
      * @param View $view
      */
-    public function __construct(Form $form, MemberRepository $memberRepository, Redirect $redirect, View $view)
+    public function __construct(Form $form, TagRepository $tagRepository, Redirect $redirect, View $view)
     {
         $this->form = $form;
-        $this->memberRepository = $memberRepository;
+        $this->tagRepository = $tagRepository;
         $this->redirect = $redirect;
         $this->view = $view;
     }
 
     /**
-     * @Route("/new", name="member_new")
+     * @Route("/new", name="tag_new")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -54,17 +54,17 @@ class NewMemberController
      */
     public function newAction(Request $request): Response
     {
-        $member = new Member();
-        $form = $this->form->create(MemberType::class, $request, $member);
+        $tag = new Tag();
+        $form = $this->form->create(TagType::class, $request, $tag);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->memberRepository->save($member);
+            $this->tagRepository->save($tag);
 
-            return $this->redirect->toRoute('member_show', ['id' => $member->getId()]);
+            return $this->redirect->toRoute('tag_show', ['id' => $tag->getId()]);
         }
 
-        return $this->view->render('member/new.html.twig', [
-            'member' => $member,
+        return $this->view->render('tag/new.html.twig', [
+            'tag' => $tag,
             'form' => $form->createView(),
         ]);
     }

@@ -48,7 +48,7 @@ class ShowBookController
     }
 
     /**
-     * @Route("/{id}", name="booking_book_show")
+     * @Route("/{id}/show", name="booking_book_show")
      * @Method({"GET", "POST"})
      *
      * @param Request $request
